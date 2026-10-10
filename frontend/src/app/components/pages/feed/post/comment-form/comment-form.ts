@@ -1,4 +1,4 @@
-import { Component, inject, input, output, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, input, output } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -17,7 +17,6 @@ import { CommentRequest } from '../../../../../models/comment.model';
     MatIconModule,
   ],
   templateUrl: './comment-form.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './comment-form.css',
 })
 export class CommentFormComponent {

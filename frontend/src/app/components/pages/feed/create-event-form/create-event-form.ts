@@ -1,4 +1,5 @@
-import { Component, inject, output, signal, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, output, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -7,6 +8,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { map } from 'rxjs';
 import { EventCreate } from '../../../../models/event.model';
 
 @Component({
@@ -23,7 +25,6 @@ import { EventCreate } from '../../../../models/event.model';
     MatNativeDateModule,
   ],
   templateUrl: './create-event-form.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './create-event-form.css',
 })
 export class CreateEventFormComponent {
@@ -41,6 +42,11 @@ export class CreateEventFormComponent {
     location: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(300)]],
     start_date: ['', [Validators.required]],
     end_date: ['', [Validators.required]],
+  });
+
+  // Signal so the view updates when the datepicker overlay changes the form
+  readonly isFormValid = toSignal(this.eventForm.statusChanges.pipe(map((s) => s === 'VALID')), {
+    initialValue: this.eventForm.valid,
   });
 
   readonly minDate = new Date();

@@ -5,7 +5,6 @@ import {
   input,
   output,
   signal,
-  ChangeDetectionStrategy,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -32,7 +31,6 @@ import { CommentListComponent } from './comment-list/comment-list';
     CommentListComponent,
   ],
   templateUrl: './post.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './post.css',
 })
 export class PostComponent {

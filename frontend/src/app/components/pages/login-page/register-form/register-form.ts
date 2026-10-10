@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { SubmitButton } from '../submit-button/submit-button';
 import { ValidationErrors } from '../validation-errors/validation-errors';
@@ -8,7 +8,6 @@ import { ValidationErrors } from '../validation-errors/validation-errors';
   standalone: true,
   imports: [ReactiveFormsModule, SubmitButton, ValidationErrors],
   templateUrl: './register-form.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './register-form.css',
 })
 export class RegisterForm {

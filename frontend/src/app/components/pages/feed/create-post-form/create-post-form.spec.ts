@@ -21,17 +21,17 @@ describe('CreatePostFormComponent', () => {
   });
 
   it('should expand form on focus', () => {
-    expect(component.isExpanded).toBe(false);
+    expect(component.isExpanded()).toBe(false);
     component.onFocus();
-    expect(component.isExpanded).toBe(true);
+    expect(component.isExpanded()).toBe(true);
   });
 
   it('should reset form on cancel', () => {
     component.postForm.patchValue({ content: 'Test content' });
     component.onFocus();
     component.onCancel();
-    expect(component.isExpanded).toBe(false);
-    expect(component.postForm.value.content).toBeNull();
+    expect(component.isExpanded()).toBe(false);
+    expect(component.postForm.value.content).toBe('');
   });
 
   it('should emit createPost event on valid submit', () => {
@@ -50,6 +50,6 @@ describe('CreatePostFormComponent', () => {
 
   it('should calculate character count correctly', () => {
     component.postForm.patchValue({ content: 'Hello' });
-    expect(component.characterCount).toBe(5);
+    expect(component.characterCount()).toBe(5);
   });
 });

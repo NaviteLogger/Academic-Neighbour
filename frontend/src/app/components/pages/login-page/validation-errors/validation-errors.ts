@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectorRef, Component, effect, inject, input } from '@angular/core';
 
 import { AbstractControl } from '@angular/forms';
 
@@ -6,10 +6,19 @@ import { AbstractControl } from '@angular/forms';
   selector: 'app-validation-errors',
   imports: [],
   templateUrl: './validation-errors.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './validation-errors.css',
 })
 export class ValidationErrors {
-  @Input({ required: true }) control: AbstractControl | null = null;
-  @Input() controlName = 'To pole';
+  private readonly cdr = inject(ChangeDetectorRef);
+
+  readonly control = input.required<AbstractControl | null>();
+  readonly controlName = input('To pole');
+
+  constructor() {
+    // The control instance stays the same while its state changes, so re-render on its events.
+    effect((onCleanup) => {
+      const subscription = this.control()?.events.subscribe(() => this.cdr.markForCheck());
+      onCleanup(() => subscription?.unsubscribe());
+    });
+  }
 }

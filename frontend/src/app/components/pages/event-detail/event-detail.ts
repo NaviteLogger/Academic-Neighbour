@@ -4,7 +4,6 @@ import {
   computed,
   inject,
   signal,
-  ChangeDetectionStrategy,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
@@ -29,7 +28,6 @@ import { EventService } from '../../../services/event.service';
     MatDivider,
   ],
   templateUrl: './event-detail.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './event-detail.css',
 })
 export class EventDetailPage implements OnInit {

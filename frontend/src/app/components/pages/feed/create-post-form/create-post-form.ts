@@ -4,7 +4,6 @@ import {
   inject,
   output,
   signal,
-  ChangeDetectionStrategy,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -27,7 +26,6 @@ import { PostCreate } from '../../../../models/post.model';
     MatIconModule,
   ],
   templateUrl: './create-post-form.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './create-post-form.css',
 })
 export class CreatePostFormComponent {

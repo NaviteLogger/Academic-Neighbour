@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, computed, inject, signal, ChangeDetectionStrategy } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
@@ -31,7 +31,6 @@ import { PostComponent } from './post/post';
     FeedTabsComponent,
   ],
   templateUrl: './feed.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './feed.css',
 })
 export class Feed {
