@@ -18,11 +18,6 @@ export interface UserCreate {
 }
 
 /**
- * @deprecated Use UserCreate instead
- */
-export type RegisterRequest = UserCreate;
-
-/**
  * Login request model
  */
 export interface LoginRequest {
@@ -45,11 +40,6 @@ export interface UserRead {
 }
 
 /**
- * @deprecated Use UserRead instead
- */
-export type User = UserRead;
-
-/**
  * Token response with user information
  */
 export interface TokenWithUser {
@@ -58,9 +48,5 @@ export interface TokenWithUser {
     user: UserRead;
 }
 
-/**
- * @deprecated Use TokenWithUser instead
- */
-export type AuthResponse = TokenWithUser;
 export type RegisterResponse = TokenWithUser;
 export type LoginResponse = TokenWithUser;

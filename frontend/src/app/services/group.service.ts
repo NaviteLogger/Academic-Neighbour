@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, forkJoin, map, of, switchMap } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { User } from '../models/auth.model';
+import { UserRead } from '../models/auth.model';
 import { Group, GroupCreate } from '../models/group.model';
 import { PostWithAuthor } from '../models/post.model';
 import { AuthService } from './auth.service';
@@ -74,8 +74,8 @@ export class GroupService {
     /**
      * Get members of a group
      */
-    getGroupMembers(groupId: number): Observable<User[]> {
-        return this.http.get<User[]>(`${this.apiUrl}/${groupId}/members`);
+    getGroupMembers(groupId: number): Observable<UserRead[]> {
+        return this.http.get<UserRead[]>(`${this.apiUrl}/${groupId}/members`);
     }
 
     /**

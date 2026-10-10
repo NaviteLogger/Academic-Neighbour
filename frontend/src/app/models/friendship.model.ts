@@ -25,8 +25,3 @@ export interface Friendship {
     addressee_id: number;
     status?: FriendshipStatus;
 }
-
-/**
- * @deprecated Use Friendship instead
- */
-export type FriendshipResponse = Friendship;

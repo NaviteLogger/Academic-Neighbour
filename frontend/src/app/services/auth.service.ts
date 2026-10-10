@@ -7,9 +7,9 @@ import { environment } from '../../environments/environment';
 import {
     LoginRequest,
     LoginResponse,
-    RegisterRequest,
     RegisterResponse,
-    User
+    UserCreate,
+    UserRead
 } from '../models/auth.model';
 
 @Injectable({
@@ -25,7 +25,7 @@ export class AuthService {
     private readonly USER_KEY = 'user_data';
 
     private tokenSignal = signal<string | null>(null);
-    private userSignal = signal<User | null>(null);
+    private userSignal = signal<UserRead | null>(null);
 
     readonly token = this.tokenSignal.asReadonly();
     readonly currentUser = this.userSignal.asReadonly();
@@ -67,7 +67,7 @@ export class AuthService {
     /**
      * Register a new user
      */
-    register(data: RegisterRequest): Observable<RegisterResponse> {
+    register(data: UserCreate): Observable<RegisterResponse> {
         return this.http.post<RegisterResponse>(`${this.apiUrl}/users/register`, data).pipe(
             tap(response => {
                 this.setAuthData(response.access_token, response.user);
@@ -125,7 +125,7 @@ export class AuthService {
     /**
      * Set authentication data (token and user)
      */
-    private setAuthData(token: string, user: User): void {
+    private setAuthData(token: string, user: UserRead): void {
         this.tokenSignal.set(token);
         this.userSignal.set(user);
 

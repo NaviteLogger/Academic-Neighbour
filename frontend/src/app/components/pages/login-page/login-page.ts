@@ -3,7 +3,7 @@ import { Component, inject, signal } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { LoginRequest, RegisterRequest } from '../../../models/auth.model';
+import { LoginRequest, UserCreate } from '../../../models/auth.model';
 import { AuthService } from '../../../services/auth.service';
 import { Header } from '../landing-page/header/header';
 import { AuthToggle } from './auth-toggle/auth-toggle';
@@ -141,7 +141,7 @@ export class LoginPage {
     if (this.registerForm.valid) {
       this.apiError.set(null);
 
-      const registerData: RegisterRequest = this.registerForm.getRawValue();
+      const registerData: UserCreate = this.registerForm.getRawValue();
 
       this.authService.register(registerData).subscribe({
         next: (response) => {
