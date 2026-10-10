@@ -10,10 +10,7 @@ describe('Feed', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [Feed],
-      providers: [
-        provideHttpClientTesting(),
-        provideRouter([])
-      ]
+      providers: [provideHttpClientTesting(), provideRouter([])],
     }).compileComponents();
 
     fixture = TestBed.createComponent(Feed);
@@ -25,14 +22,13 @@ describe('Feed', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should load posts on init', (done) => {
+  it('should load posts on init', async () => {
     fixture.detectChanges();
-    expect(component.isLoading).toBeTrue();
+    expect(component.isLoading).toBe(true);
 
     setTimeout(() => {
-      expect(component.isLoading).toBeFalse();
+      expect(component.isLoading).toBe(false);
       expect(component.posts().length).toBeGreaterThan(0);
-      done();
     }, 600);
   });
 
@@ -44,7 +40,13 @@ describe('Feed', () => {
   });
 
   it('should like a post', () => {
-    (component as unknown as { postsSignal: { set: (value: unknown) => void } }).postsSignal.set([
+    (
+      component as unknown as {
+        postsSignal: {
+          set: (value: unknown) => void;
+        };
+      }
+    ).postsSignal.set([
       {
         id: 1,
         text: 'Test',

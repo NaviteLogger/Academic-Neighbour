@@ -1,11 +1,12 @@
-import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common'; 
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+
 import { AbstractControl } from '@angular/forms';
 
 @Component({
   selector: 'app-validation-errors',
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './validation-errors.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './validation-errors.css',
 })
 export class ValidationErrors {

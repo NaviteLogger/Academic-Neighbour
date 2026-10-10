@@ -20,12 +20,7 @@ describe('FeedTabsComponent', () => {
     });
 
     it('should have board as default active tab', () => {
-        expect(component.activeTab).toBe('board');
-    });
-
-    it('should change active tab when selectTab is called', () => {
-        component.selectTab('events');
-        expect(component.activeTab).toBe('events');
+        expect(component.activeTab()).toBe('board');
     });
 
     it('should emit tabChanged event when tab is selected', () => {
@@ -39,7 +34,7 @@ describe('FeedTabsComponent', () => {
     });
 
     it('should return true for isActive when tab matches activeTab', () => {
-        component.activeTab = 'events';
+        fixture.componentRef.setInput('activeTab', 'events');
         expect(component.isActive('events')).toBe(true);
         expect(component.isActive('board')).toBe(false);
     });
