@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, ChangeDetectionStrategy } from '@angular/core';
 import { AboutUsButton } from '../buttons/about-us-button/about-us-button';
 import { ContactButton } from '../buttons/contact-button/contact-button';
 import { HomeButton } from '../buttons/home-button/home-button';
@@ -7,6 +7,7 @@ import { HomeButton } from '../buttons/home-button/home-button';
   selector: 'app-footer',
   imports: [HomeButton, AboutUsButton, ContactButton],
   templateUrl: './footer.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './footer.css',
 })
 export class Footer {

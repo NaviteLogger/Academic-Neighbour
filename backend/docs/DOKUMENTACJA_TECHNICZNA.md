@@ -52,39 +52,37 @@ Aplikacja została zbudowana w oparciu o architekturę warstwową (layered archi
 ### Framework i języki
 
 - **Python 3.12+**: Język programowania
-- **FastAPI 0.119.1+**: Framework webowy ASGI
-- **SQLModel 0.0.27**: ORM łączący SQLAlchemy i Pydantic
+- **FastAPI 0.143.0+**: Framework webowy ASGI
+- **SQLModel 0.0.48**: ORM łączący SQLAlchemy i Pydantic
 - **Uvicorn**: Serwer ASGI
 
 ### Baza danych
 
 - **PostgreSQL**: Relacyjna baza danych
-- **psycopg2 2.9.11**: Adapter PostgreSQL dla Pythona
+- **psycopg 3.3.6**: Adapter PostgreSQL dla Pythona
 
 ### Bezpieczeństwo
 
-- **python-jose[cryptography] 3.5.0**: Obsługa JWT (JSON Web Tokens)
-- **pwdlib[argon2] 0.3.0**: Hashowanie haseł algorytmem Argon2
+- **PyJWT 2.15.1**: Obsługa JWT (JSON Web Tokens)
+- **pwdlib[argon2] 0.3.1**: Hashowanie haseł algorytmem Argon2
 - **OAuth2PasswordBearer**: Schemat autentykacji OAuth2
 
 ### Testowanie
 
-- **pytest 8.4.2**: Framework testowy
-- **pytest-asyncio 1.2.0**: Wsparcie dla testów asynchronicznych
+- **pytest 9.1.1**: Framework testowy
+- **pytest-asyncio 1.4.0**: Wsparcie dla testów asynchronicznych
 - **pytest-cov**: Analiza pokrycia kodu testami
-- **httpx**: Klient HTTP do testów API
+- **httpx2**: Klient HTTP do testów API
 
 ### Narzędzia deweloperskie
 
-- **Ruff 0.14.3**: Linter i formatter kodu
-- **Black**: Formatter kodu
-- **isort**: Sortowanie importów
+- **Ruff 0.17.0**: Linter, formatter kodu i sortowanie importów
 - **mypy**: Statyczna analiza typów
 
 ### Dodatkowe biblioteki
 
-- **python-dotenv 1.1.1**: Zarządzanie zmiennymi środowiskowymi
-- **python-multipart 0.0.20**: Obsługa formularzy multipart
+- **python-dotenv 1.2.4**: Zarządzanie zmiennymi środowiskowymi
+- **python-multipart 0.0.32**: Obsługa formularzy multipart
 
 ---
 

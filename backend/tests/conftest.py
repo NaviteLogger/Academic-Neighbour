@@ -24,7 +24,7 @@ from models.models import (
 from services.security import get_password_hash
 
 
-class FixtureEnum(str, enum.Enum):
+class FixtureEnum(enum.StrEnum):
     """Enumeration of all available test fixtures."""
 
     SESSION = "session"

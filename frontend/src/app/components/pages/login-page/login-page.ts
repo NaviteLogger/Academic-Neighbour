@@ -1,15 +1,11 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, inject, signal } from '@angular/core';
-import {
-  NonNullableFormBuilder,
-  ReactiveFormsModule,
-  Validators
-} from '@angular/forms';
+import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { LoginRequest, RegisterRequest } from '../../../models/auth.model';
 import { AuthService } from '../../../services/auth.service';
-import { Header } from "../landing-page/header/header";
+import { Header } from '../landing-page/header/header';
 import { AuthToggle } from './auth-toggle/auth-toggle';
 import { LoginForm } from './login-form/login-form';
 import { RegisterForm } from './register-form/register-form';
@@ -27,15 +23,10 @@ interface ErrorDetail {
 @Component({
   selector: 'app-login-page',
   standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    AuthToggle,
-    LoginForm,
-    RegisterForm,
-    Header
-  ],
+  imports: [ReactiveFormsModule, AuthToggle, LoginForm, RegisterForm, Header],
   templateUrl: './login-page.html',
-  styleUrl: './login-page.css'
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './login-page.css',
 })
 export class LoginPage {
   private readonly fb = inject(NonNullableFormBuilder);
@@ -50,7 +41,7 @@ export class LoginPage {
 
   readonly loginForm = this.fb.group({
     username: ['', [Validators.required]],
-    password: ['', [Validators.required]]
+    password: ['', [Validators.required]],
   });
 
   readonly registerForm = this.fb.group({
@@ -58,12 +49,12 @@ export class LoginPage {
     username: ['', [Validators.required]],
     password: ['', [Validators.required, Validators.minLength(8)]],
     first_name: ['', [Validators.required]],
-    last_name: ['', [Validators.required]]
+    last_name: ['', [Validators.required]],
   });
 
   constructor() {
     // Check for query parameters
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe((params) => {
       // Store return URL if provided
       if (params['returnUrl']) {
         this.returnUrl = params['returnUrl'];
@@ -78,12 +69,10 @@ export class LoginPage {
     });
   }
 
-
   setForm(form: 'login' | 'register') {
     this.activeForm.set(form);
     this.apiError.set(null);
   }
-
 
   onLoginSubmit(): void {
     if (this.loginForm.valid) {
@@ -97,7 +86,7 @@ export class LoginPage {
           this.apiError.set(null);
           this.router.navigate([this.returnUrl]);
         },
-        error: (error) => this.handleLoginError(error)
+        error: (error) => this.handleLoginError(error),
       });
     } else {
       console.warn('Formularz logowania jest niepoprawny.');
@@ -116,7 +105,9 @@ export class LoginPage {
         this.apiError.set('Nieprawidłowy email lub hasło.');
         break;
       case 0:
-        this.apiError.set('Nie można połączyć się z serwerem. Sprawdź połączenie internetowe lub spróbuj ponownie później.');
+        this.apiError.set(
+          'Nie można połączyć się z serwerem. Sprawdź połączenie internetowe lub spróbuj ponownie później.',
+        );
         break;
       case 503:
       case 504:
@@ -133,10 +124,12 @@ export class LoginPage {
   private handle422Error(error: HttpErrorResponse): void {
     const detail = (error.error as ErrorDetail)?.detail;
     if (Array.isArray(detail)) {
-      const errorMessages = detail.map((err: ValidationError) => {
-        const field = err.loc?.[1] || 'Pole';
-        return `${field}: ${err.msg}`;
-      }).join(', ');
+      const errorMessages = detail
+        .map((err: ValidationError) => {
+          const field = err.loc?.[1] || 'Pole';
+          return `${field}: ${err.msg}`;
+        })
+        .join(', ');
       this.apiError.set(errorMessages);
     } else if (typeof detail === 'string') {
       this.apiError.set(detail);
@@ -157,7 +150,7 @@ export class LoginPage {
           this.apiError.set(null);
           this.router.navigate([this.returnUrl]);
         },
-        error: (error) => this.handleRegisterError(error)
+        error: (error) => this.handleRegisterError(error),
       });
     } else {
       console.warn('Formularz rejestracji jest niepoprawny.');
@@ -179,7 +172,9 @@ export class LoginPage {
         this.apiError.set('Użytkownik z tym adresem email już istnieje.');
         break;
       case 0:
-        this.apiError.set('Nie można połączyć się z serwerem. Sprawdź połączenie internetowe lub spróbuj ponownie później.');
+        this.apiError.set(
+          'Nie można połączyć się z serwerem. Sprawdź połączenie internetowe lub spróbuj ponownie później.',
+        );
         break;
       case 503:
       case 504:

@@ -1,5 +1,12 @@
-import { Component, OnInit, signal, inject, computed } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {
+  Component,
+  OnInit,
+  signal,
+  inject,
+  computed,
+  ChangeDetectionStrategy,
+} from '@angular/core';
+
 import { FriendshipService } from '../../../../services/friendship.service';
 import { UserRead } from '../../../../models/auth.model';
 
@@ -14,15 +21,15 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   selector: 'app-friend-sent-list',
   standalone: true,
   imports: [
-    CommonModule,
     MatListModule,
     MatIconModule,
     MatButtonModule,
     MatTooltipModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
   ],
   templateUrl: './friend-sent-list.html',
-  styleUrl: './friend-sent-list.css'
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './friend-sent-list.css',
 })
 export class FriendSentList implements OnInit {
   private friendshipService = inject(FriendshipService);
@@ -34,7 +41,9 @@ export class FriendSentList implements OnInit {
 
   // Sygnały obliczeniowe
   readonly hasSentRequests = computed(() => this.sentRequests().length > 0);
-  readonly isEmpty = computed(() => !this.isLoading() && !this.hasSentRequests() && !this.hasError());
+  readonly isEmpty = computed(
+    () => !this.isLoading() && !this.hasSentRequests() && !this.hasError(),
+  );
   readonly hasError = computed(() => !!this.errorMessage());
 
   ngOnInit(): void {
@@ -54,7 +63,7 @@ export class FriendSentList implements OnInit {
         console.error('Failed to load sent requests:', err);
         this.errorMessage.set('Nie udało się załadować wysłanych zaproszeń.');
         this.isLoading.set(false);
-      }
+      },
     });
   }
 
@@ -63,15 +72,15 @@ export class FriendSentList implements OnInit {
     this.friendshipService.removeFriend(addresseeId).subscribe({
       next: () => {
         // Po anulowaniu, usuwamy zaproszenie z listy
-        this.sentRequests.update(currentRequests =>
-          currentRequests.filter(req => req.id !== addresseeId)
+        this.sentRequests.update((currentRequests) =>
+          currentRequests.filter((req) => req.id !== addresseeId),
         );
       },
       error: (err) => {
         console.error('Failed to cancel request:', err);
         this.errorMessage.set('Nie udało się anulować zaproszenia.');
         setTimeout(() => this.errorMessage.set(null), 3000);
-      }
+      },
     });
   }
 

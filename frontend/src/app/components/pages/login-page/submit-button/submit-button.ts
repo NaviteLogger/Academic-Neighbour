@@ -1,9 +1,10 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+
 @Component({
   selector: 'app-submit-button',
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './submit-button.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './submit-button.css',
 })
 export class SubmitButton {

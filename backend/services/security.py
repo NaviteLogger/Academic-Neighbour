@@ -1,9 +1,9 @@
 from datetime import UTC, datetime, timedelta
 from typing import Any
 
+import jwt
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
-from jose import JWTError, jwt
 from pwdlib import PasswordHash
 from sqlmodel import Session
 
@@ -95,7 +95,7 @@ def verify_token(token: str) -> dict[str, Any]:
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         return payload
-    except JWTError as e:
+    except jwt.InvalidTokenError as e:
         logger.error(f"JWT decode error: {e}")
         raise credentials_exception from e
 
@@ -113,7 +113,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme), session: Session
         if username is None:
             raise credentials_exception
         token_data = TokenData(username=username)
-    except JWTError as e:
+    except jwt.InvalidTokenError as e:
         logger.error(f"JWT decode error: {e}")
         raise credentials_exception from e
 

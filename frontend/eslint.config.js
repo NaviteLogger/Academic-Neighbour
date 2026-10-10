@@ -1,9 +1,10 @@
 // @ts-check
+const { defineConfig } = require("eslint/config");
 const eslint = require("@eslint/js");
 const tseslint = require("typescript-eslint");
 const angular = require("angular-eslint");
 
-module.exports = tseslint.config(
+module.exports = defineConfig(
   {
     files: ["**/*.ts"],
     extends: [
@@ -30,6 +31,9 @@ module.exports = tseslint.config(
           style: "kebab-case",
         },
       ],
+      // The Angular v22 migration pinned existing components to ChangeDetectionStrategy.Eager
+      // to keep their pre-v22 behavior. Re-enable once they have been moved to OnPush.
+      "@angular-eslint/prefer-on-push-component-change-detection": "off",
     },
   },
   {

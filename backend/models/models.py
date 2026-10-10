@@ -10,14 +10,14 @@ from sqlmodel import Field, SQLModel  # type: ignore
 # ============================================================================
 
 
-class UserRole(str, enum.Enum):
+class UserRole(enum.StrEnum):
     """User role enumeration for role-based access control."""
 
     USER = "user"
     ADMIN = "admin"
 
 
-class FriendshipStatusEnum(str, enum.Enum):
+class FriendshipStatusEnum(enum.StrEnum):
     """Friendship status enumeration."""
 
     PENDING = "pending"
@@ -25,7 +25,7 @@ class FriendshipStatusEnum(str, enum.Enum):
     DECLINED = "declined"
 
 
-class AttendanceStatusEnum(str, enum.Enum):
+class AttendanceStatusEnum(enum.StrEnum):
     """Event attendance status enumeration."""
 
     ATTENDING = "attending"

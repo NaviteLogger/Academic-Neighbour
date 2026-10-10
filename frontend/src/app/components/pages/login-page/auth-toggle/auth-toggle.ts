@@ -1,10 +1,10 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'app-auth-toggle',
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './auth-toggle.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './auth-toggle.css',
 })
 export class AuthToggle {

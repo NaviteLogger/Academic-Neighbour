@@ -1,5 +1,12 @@
-import { Component, OnInit, signal, inject, computed } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {
+  Component,
+  OnInit,
+  signal,
+  inject,
+  computed,
+  ChangeDetectionStrategy,
+} from '@angular/core';
+
 import { FriendshipService } from '../../../../services/friendship.service';
 import { UserRead } from '../../../../models/auth.model';
 
@@ -14,15 +21,15 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   selector: 'app-friend-request-list',
   standalone: true,
   imports: [
-    CommonModule,
     MatListModule,
     MatIconModule,
     MatButtonModule,
     MatTooltipModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
   ],
   templateUrl: './friend-request-list.html',
-  styleUrl: './friend-request-list.css'
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './friend-request-list.css',
 })
 export class FriendRequestList implements OnInit {
   private friendshipService = inject(FriendshipService);
@@ -54,7 +61,7 @@ export class FriendRequestList implements OnInit {
         console.error('Failed to load friend requests:', err);
         this.errorMessage.set('Nie udało się załadować zaproszeń do znajomych.');
         this.isLoading.set(false);
-      }
+      },
     });
   }
 
@@ -62,18 +69,18 @@ export class FriendRequestList implements OnInit {
     this.friendshipService.acceptFriendRequest(requesterId).subscribe({
       next: () => {
         // Po akceptacji, usuwamy zaproszenie z listy
-        this.requests.update(currentRequests =>
-          currentRequests.filter(req => req.id !== requesterId)
+        this.requests.update((currentRequests) =>
+          currentRequests.filter((req) => req.id !== requesterId),
         );
-        // Idealnie byłoby też przenieść go na listę znajomych, 
-        // ale to wymagałoby współdzielonego serwisu stanu. 
+        // Idealnie byłoby też przenieść go na listę znajomych,
+        // ale to wymagałoby współdzielonego serwisu stanu.
         // Na razie proste usunięcie z tej listy wystarczy.
       },
       error: (err) => {
         console.error('Failed to accept request:', err);
         this.errorMessage.set('Nie udało się zaakceptować zaproszenia.');
         setTimeout(() => this.errorMessage.set(null), 3000);
-      }
+      },
     });
   }
 
@@ -81,15 +88,15 @@ export class FriendRequestList implements OnInit {
     this.friendshipService.declineFriendRequest(requesterId).subscribe({
       next: () => {
         // Po odrzuceniu, również usuwamy zaproszenie z listy
-        this.requests.update(currentRequests =>
-          currentRequests.filter(req => req.id !== requesterId)
+        this.requests.update((currentRequests) =>
+          currentRequests.filter((req) => req.id !== requesterId),
         );
       },
       error: (err) => {
         console.error('Failed to decline request:', err);
         this.errorMessage.set('Nie udało się odrzucić zaproszenia.');
         setTimeout(() => this.errorMessage.set(null), 3000);
-      }
+      },
     });
   }
 

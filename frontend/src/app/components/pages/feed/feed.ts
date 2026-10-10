@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
@@ -20,8 +20,18 @@ import { PostComponent } from './post/post';
 @Component({
   selector: 'app-feed',
   standalone: true,
-  imports: [CommonModule, MatIconModule, MatButtonModule, PostComponent, CreatePostFormComponent, CreateEventFormComponent, FeedHeaderComponent, FeedTabsComponent],
+  imports: [
+    CommonModule,
+    MatIconModule,
+    MatButtonModule,
+    PostComponent,
+    CreatePostFormComponent,
+    CreateEventFormComponent,
+    FeedHeaderComponent,
+    FeedTabsComponent,
+  ],
   templateUrl: './feed.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './feed.css',
 })
 export class Feed {
@@ -115,7 +125,7 @@ export class Feed {
     }
 
     // Find the post to check its current like status
-    const post = this.posts().find(p => p.id === postId);
+    const post = this.posts().find((p) => p.id === postId);
     if (!post) return;
 
     const isLiked = post.liked_by_current_user;

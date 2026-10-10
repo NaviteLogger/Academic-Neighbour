@@ -1,5 +1,11 @@
-import { CommonModule } from '@angular/common';
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  OnInit,
+  signal,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { UserRead } from '../../../../models/auth.model';
 import { FriendshipService } from '../../../../services/friendship.service';
@@ -15,15 +21,15 @@ import { MatTooltipModule } from '@angular/material/tooltip'; // Dla podpowiedzi
   selector: 'app-friend-list',
   standalone: true,
   imports: [
-    CommonModule,
     MatListModule,
     MatIconModule,
     MatButtonModule,
     MatTooltipModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
   ],
   templateUrl: './friend-list.html',
-  styleUrl: './friend-list.css'
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './friend-list.css',
 })
 export class FriendList implements OnInit {
   private friendshipService = inject(FriendshipService);
@@ -56,7 +62,7 @@ export class FriendList implements OnInit {
         console.error('Failed to load friends:', err);
         this.errorMessage.set('Nie udało się załadować listy znajomych. Spróbuj ponownie później.');
         this.isLoading.set(false);
-      }
+      },
     });
   }
 
@@ -65,8 +71,8 @@ export class FriendList implements OnInit {
     this.friendshipService.removeFriend(friendId).subscribe({
       next: () => {
         // Po pomyślnym usunięciu, aktualizujemy listę w sygnale
-        this.friends.update(currentFriends =>
-          currentFriends.filter(friend => friend.id !== friendId)
+        this.friends.update((currentFriends) =>
+          currentFriends.filter((friend) => friend.id !== friendId),
         );
       },
       error: (err) => {
@@ -75,7 +81,7 @@ export class FriendList implements OnInit {
         this.errorMessage.set('Nie udało się usunąć znajomego.');
         // Ukryj błąd po kilku sekundach
         setTimeout(() => this.errorMessage.set(null), 3000);
-      }
+      },
     });
   }
 

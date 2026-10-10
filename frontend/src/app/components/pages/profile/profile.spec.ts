@@ -1,24 +1,24 @@
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withXhr } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { ProfilePage } from './profile';
 
 describe('ProfilePage', () => {
-    let component: ProfilePage;
-    let fixture: ComponentFixture<ProfilePage>;
+  let component: ProfilePage;
+  let fixture: ComponentFixture<ProfilePage>;
 
-    beforeEach(async () => {
-        await TestBed.configureTestingModule({
-            imports: [ProfilePage],
-            providers: [provideHttpClient(), provideRouter([])],
-        }).compileComponents();
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [ProfilePage],
+      providers: [provideHttpClient(withXhr()), provideRouter([])],
+    }).compileComponents();
 
-        fixture = TestBed.createComponent(ProfilePage);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
-    });
+    fixture = TestBed.createComponent(ProfilePage);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
 
-    it('should create', () => {
-        expect(component).toBeTruthy();
-    });
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
 });
