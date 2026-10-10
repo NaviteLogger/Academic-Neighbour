@@ -1,0 +1,3231 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "FastAPI",
+        "version": "0.1.0"
+    },
+    "paths": {
+        "/users/register": {
+            "post": {
+                "tags": [
+                    "users"
+                ],
+                "summary": "Register User",
+                "description": "Register a new user and return an access token.",
+                "operationId": "register_user_users_register_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserCreate"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TokenWithUser"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/me": {
+            "get": {
+                "tags": [
+                    "users"
+                ],
+                "summary": "Read Users Me",
+                "description": "Get current authenticated user information. Returns user data excluding password.",
+                "operationId": "read_users_me_users_me_get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserRead"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "OAuth2PasswordBearer": []
+                    }
+                ]
+            }
+        },
+        "/users/{user_id}/comments": {
+            "post": {
+                "tags": [
+                    "users"
+                ],
+                "summary": "Create Profile Comment Endpoint",
+                "description": "Create a new comment on a user profile. Requires authentication.",
+                "operationId": "create_profile_comment_endpoint_users__user_id__comments_post",
+                "security": [
+                    {
+                        "OAuth2PasswordBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "User Id"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CommentRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProfileCommentWithAuthor"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "users"
+                ],
+                "summary": "Get Profile Comments Endpoint",
+                "description": "Get all comments for a specific user profile.",
+                "operationId": "get_profile_comments_endpoint_users__user_id__comments_get",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "User Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ProfileCommentWithAuthor"
+                                    },
+                                    "title": "Response Get Profile Comments Endpoint Users  User Id  Comments Get"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/comments/{comment_id}": {
+            "put": {
+                "tags": [
+                    "users"
+                ],
+                "summary": "Update Profile Comment Endpoint",
+                "description": "Update a profile comment's content.\n\nOnly the comment author can update. Requires authentication.",
+                "operationId": "update_profile_comment_endpoint_users_comments__comment_id__put",
+                "security": [
+                    {
+                        "OAuth2PasswordBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "comment_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Comment Id"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CommentRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProfileCommentWithAuthor"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/search": {
+            "get": {
+                "tags": [
+                    "users"
+                ],
+                "summary": "Search Users Endpoint",
+                "description": "Search for users by username, first name, or last name.",
+                "operationId": "search_users_endpoint_users_search_get",
+                "parameters": [
+                    {
+                        "name": "query",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Query"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/UserRead"
+                                    },
+                                    "title": "Response Search Users Endpoint Users Search Get"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{user_id}": {
+            "get": {
+                "tags": [
+                    "users"
+                ],
+                "summary": "Get User Profile",
+                "description": "Get user profile information by user ID. Returns public user data excluding password.",
+                "operationId": "get_user_profile_users__user_id__get",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "User Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserRead"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/users": {
+            "get": {
+                "tags": [
+                    "admin"
+                ],
+                "summary": "Read All Users",
+                "description": "Admin-only endpoint to get all users.",
+                "operationId": "read_all_users_admin_users_get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/User"
+                                    },
+                                    "type": "array",
+                                    "title": "Response Read All Users Admin Users Get"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "OAuth2PasswordBearer": []
+                    }
+                ]
+            }
+        },
+        "/admin/user/{identifier}": {
+            "get": {
+                "tags": [
+                    "admin"
+                ],
+                "summary": "Read User By Username",
+                "description": "Admin-only endpoint to get user by username or email.",
+                "operationId": "read_user_by_username_admin_user__identifier__get",
+                "security": [
+                    {
+                        "OAuth2PasswordBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "identifier",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Identifier"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/token": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Login",
+                "description": "OAuth2 compatible token login. Use username and password to get an access token.\nReturns token along with user information including role for frontend routing.\nThe other fields (grant_type, scope, client_id, client_secret) are optional\nand can be left empty.",
+                "operationId": "login_auth_token_post",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Body_login_auth_token_post"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TokenWithUser"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/posts/": {
+            "get": {
+                "tags": [
+                    "posts"
+                ],
+                "summary": "Read Posts",
+                "description": "Get all posts.",
+                "operationId": "read_posts_posts__get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/Post"
+                                    },
+                                    "type": "array",
+                                    "title": "Response Read Posts Posts  Get"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "posts"
+                ],
+                "summary": "Create Post",
+                "description": "Create a new post. Requires authentication.",
+                "operationId": "create_post_posts__post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PostCreate"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Post"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "OAuth2PasswordBearer": []
+                    }
+                ]
+            }
+        },
+        "/posts/{post_id}": {
+            "get": {
+                "tags": [
+                    "posts"
+                ],
+                "summary": "Read Post",
+                "description": "Get a post by ID.",
+                "operationId": "read_post_posts__post_id__get",
+                "parameters": [
+                    {
+                        "name": "post_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Post Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Post"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/posts/{post_id}/with-author": {
+            "get": {
+                "tags": [
+                    "posts"
+                ],
+                "summary": "Read Post With Author",
+                "description": "Get a post by ID with author information.",
+                "operationId": "read_post_with_author_posts__post_id__with_author_get",
+                "parameters": [
+                    {
+                        "name": "post_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Post Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PostWithAuthor"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/posts/{post_id}/like": {
+            "post": {
+                "tags": [
+                    "posts"
+                ],
+                "summary": "Like Post Endpoint",
+                "description": "Like a post. Requires authentication.",
+                "operationId": "like_post_endpoint_posts__post_id__like_post",
+                "security": [
+                    {
+                        "OAuth2PasswordBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "post_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Post Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PostLike"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "posts"
+                ],
+                "summary": "Unlike Post Endpoint",
+                "description": "Unlike a post. Requires authentication.",
+                "operationId": "unlike_post_endpoint_posts__post_id__like_delete",
+                "security": [
+                    {
+                        "OAuth2PasswordBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "post_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Post Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Successful Response"
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/posts/{post_id}/likes": {
+            "get": {
+                "tags": [
+                    "posts"
+                ],
+                "summary": "Get Post Likes",
+                "description": "Get likes information for a post. Returns count and whether current user has liked it.",
+                "operationId": "get_post_likes_posts__post_id__likes_get",
+                "security": [
+                    {
+                        "OAuth2PasswordBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "post_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Post Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LikesInfo"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/posts/{post_id}/comments": {
+            "post": {
+                "tags": [
+                    "comments"
+                ],
+                "summary": "Create Comment Endpoint",
+                "description": "Create a new comment on a post. Requires authentication.",
+                "operationId": "create_comment_endpoint_posts__post_id__comments_post",
+                "security": [
+                    {
+                        "OAuth2PasswordBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "post_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Post Id"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CommentRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CommentWithAuthor"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "comments"
+                ],
+                "summary": "Get Post Comments",
+                "description": "Get all comments for a specific post.",
+                "operationId": "get_post_comments_posts__post_id__comments_get",
+                "parameters": [
+                    {
+                        "name": "post_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Post Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CommentWithAuthor"
+                                    },
+                                    "title": "Response Get Post Comments Posts  Post Id  Comments Get"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/posts/comments/{comment_id}": {
+            "delete": {
+                "tags": [
+                    "comments"
+                ],
+                "summary": "Delete Comment Endpoint",
+                "description": "Delete a comment. Only the comment author or admin can delete. Requires authentication.",
+                "operationId": "delete_comment_endpoint_posts_comments__comment_id__delete",
+                "security": [
+                    {
+                        "OAuth2PasswordBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "comment_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Comment Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Successful Response"
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "comments"
+                ],
+                "summary": "Update Comment Endpoint",
+                "description": "Update a comment's content. Only the comment author can update. Requires authentication.",
+                "operationId": "update_comment_endpoint_posts_comments__comment_id__put",
+                "security": [
+                    {
+                        "OAuth2PasswordBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "comment_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Comment Id"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CommentRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CommentWithAuthor"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/events/": {
+            "get": {
+                "tags": [
+                    "events"
+                ],
+                "summary": "Get Events",
+                "description": "Get all upcoming events.",
+                "operationId": "get_events_events__get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/Event"
+                                    },
+                                    "type": "array",
+                                    "title": "Response Get Events Events  Get"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "events"
+                ],
+                "summary": "Create Event Endpoint",
+                "description": "Create a new event. Requires authentication. Creator is the current user.",
+                "operationId": "create_event_endpoint_events__post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EventCreate"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Event"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "OAuth2PasswordBearer": []
+                    }
+                ]
+            }
+        },
+        "/events/{event_id}": {
+            "get": {
+                "tags": [
+                    "events"
+                ],
+                "summary": "Get Event",
+                "description": "Get details of a specific event.",
+                "operationId": "get_event_events__event_id__get",
+                "parameters": [
+                    {
+                        "name": "event_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Event Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Event"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "events"
+                ],
+                "summary": "Update Event Endpoint",
+                "description": "Update an event. Only the creator can update. Requires authentication.",
+                "operationId": "update_event_endpoint_events__event_id__put",
+                "security": [
+                    {
+                        "OAuth2PasswordBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "event_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Event Id"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EventUpdate"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Event"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "events"
+                ],
+                "summary": "Delete Event Endpoint",
+                "description": "Delete an event. Only the creator can delete. Requires authentication.",
+                "operationId": "delete_event_endpoint_events__event_id__delete",
+                "security": [
+                    {
+                        "OAuth2PasswordBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "event_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Event Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Successful Response"
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/events/{event_id}/register": {
+            "post": {
+                "tags": [
+                    "events"
+                ],
+                "summary": "Register For Event",
+                "description": "Register logged-in user as interested in the event.\nCreates a new EventAttendees record with status 'interested'.\n\nRequires authentication.",
+                "operationId": "register_for_event_events__event_id__register_post",
+                "security": [
+                    {
+                        "OAuth2PasswordBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "event_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Event Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EventAttendee"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "events"
+                ],
+                "summary": "Update Registration Status",
+                "description": "Update logged-in user's registration status for the event.\n\nQuery parameters:\n- attendance_status: 'attending', 'interested', or 'not_attending'\n\nRequires authentication and existing registration.",
+                "operationId": "update_registration_status_events__event_id__register_put",
+                "security": [
+                    {
+                        "OAuth2PasswordBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "event_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Event Id"
+                        }
+                    },
+                    {
+                        "name": "attendance_status",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/components/schemas/AttendanceStatusEnum"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EventAttendee"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/events/{event_id}/attendees": {
+            "get": {
+                "tags": [
+                    "events"
+                ],
+                "summary": "Get Event Attendees Endpoint",
+                "description": "Get all attendees for a specific event with their user information and attendance status.\n\nReturns a list of attendees with user details (id, username, email, etc.)\nand their attendance status. This endpoint is public - no authentication required.",
+                "operationId": "get_event_attendees_endpoint_events__event_id__attendees_get",
+                "parameters": [
+                    {
+                        "name": "event_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Event Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/EventAttendeeResponse-Output"
+                                    },
+                                    "title": "Response Get Event Attendees Endpoint Events  Event Id  Attendees Get"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/friendships/request/{addressee_id}": {
+            "post": {
+                "tags": [
+                    "friendships"
+                ],
+                "summary": "Send Friend Request",
+                "description": "Sends a friend request to the user with the given ID.\n\nArgs:\n    addressee_id (int): ID of the user to send the friend request to\n    current_user (User, optional): The user sending the friend request. Defaults to current_user\n    session (Session, optional): Database session. Defaults to session.\n\nRaises:\n    HTTPException: 400 Bad Request if the user tries to send a request to themselves\n    HTTPException: 404 Not Found if the addressee user does not exist\n    HTTPException: 500 Internal Server Error if the current user is missing an ID\n    HTTPException: 409 Conflict if a friendship or request already exists\n\nReturns:\n    Friendship: The created friendship object",
+                "operationId": "send_friend_request_friendships_request__addressee_id__post",
+                "security": [
+                    {
+                        "OAuth2PasswordBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "addressee_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Addressee Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Friendship"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/friendships/accept/{requester_id}": {
+            "post": {
+                "tags": [
+                    "friendships"
+                ],
+                "summary": "Accept Friend Request",
+                "description": "Accept a friend request from a user with the given ID.\n\nArgs:\n    requester_id (int): ID of the user who sent the friend request\n    current_user (User, optional): The user accepting the request.\n        Defaults to current_active_user\n    session (Session, optional): Database session. Defaults to session.\n\nRaises:\n    HTTPException: 500 Internal Server Error if the current user is missing an ID\n    HTTPException: 404 Not Found if no pending request from this user exists\n\nReturns:\n    Friendship: The updated friendship object with ACCEPTED status",
+                "operationId": "accept_friend_request_friendships_accept__requester_id__post",
+                "security": [
+                    {
+                        "OAuth2PasswordBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "requester_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Requester Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Friendship"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/friendships/decline/{requester_id}": {
+            "post": {
+                "tags": [
+                    "friendships"
+                ],
+                "summary": "Decline Friend Request",
+                "description": "Decline a friend request from a user with the given ID.\n\nArgs:\n    requester_id (int): ID of the user who sent the friend request\n    current_user (User, optional): The user declining the request.\n        Defaults to current_active_user\n    session (Session, optional): Database session. Defaults to session.\n\nRaises:\n    HTTPException: 500 Internal Server Error if the current user is missing an ID\n    HTTPException: 404 Not Found if no pending request from this user exists\n\nReturns:\n    Friendship: The updated friendship object with DECLINED status",
+                "operationId": "decline_friend_request_friendships_decline__requester_id__post",
+                "security": [
+                    {
+                        "OAuth2PasswordBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "requester_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Requester Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Friendship"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/friendships/remove/{friend_id}": {
+            "delete": {
+                "tags": [
+                    "friendships"
+                ],
+                "summary": "Remove Friend",
+                "description": "Remove a friend (delete friendship).\n\nArgs:\n    friend_id (int): ID of the friend to remove\n    current_user (User, optional): The user removing the friend.\n        Defaults to current_active_user\n    session (Session, optional): Database session. Defaults to session.\n\nRaises:\n    HTTPException: 500 Internal Server Error if the current user is missing an ID\n    HTTPException: 404 Not Found if no friendship exists with this user\n\nReturns:\n    None: Returns 204 No Content on success",
+                "operationId": "remove_friend_friendships_remove__friend_id__delete",
+                "security": [
+                    {
+                        "OAuth2PasswordBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "friend_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Friend Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Successful Response"
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/friendships/": {
+            "get": {
+                "tags": [
+                    "friendships"
+                ],
+                "summary": "Read Friends",
+                "description": "Get a list of friends or pending requests.\n\nQuery Parameters:\n    filter_type: Filter friends by status\n        - accepted: Accepted friends (default)\n        - pending: Received pending friend requests\n        - sent: Sent pending friend requests\n\nArgs:\n    current_user (User, optional): The user whose friends to retrieve.\n        Defaults to current_active_user\n    session (Session, optional): Database session. Defaults to session.\n\nRaises:\n    HTTPException: 500 Internal Server Error if the current user is missing an ID\n\nReturns:\n    list[User]: List of users based on the filter type",
+                "operationId": "read_friends_friendships__get",
+                "security": [
+                    {
+                        "OAuth2PasswordBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "filter_type",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/components/schemas/FriendListFilter",
+                            "default": "accepted"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/User"
+                                    },
+                                    "title": "Response Read Friends Friendships  Get"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/groups/": {
+            "get": {
+                "tags": [
+                    "groups"
+                ],
+                "summary": "Get Groups",
+                "description": "List all groups.",
+                "operationId": "get_groups_groups__get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/GroupRead"
+                                    },
+                                    "type": "array",
+                                    "title": "Response Get Groups Groups  Get"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "groups"
+                ],
+                "summary": "Create Group Endpoint",
+                "description": "Create a new group.",
+                "operationId": "create_group_endpoint_groups__post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/GroupCreate"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GroupRead"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "OAuth2PasswordBearer": []
+                    }
+                ]
+            }
+        },
+        "/groups/{group_id}": {
+            "get": {
+                "tags": [
+                    "groups"
+                ],
+                "summary": "Get Group",
+                "description": "Get group details.",
+                "operationId": "get_group_groups__group_id__get",
+                "parameters": [
+                    {
+                        "name": "group_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Group Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GroupRead"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/groups/{group_id}/join": {
+            "post": {
+                "tags": [
+                    "groups"
+                ],
+                "summary": "Join Group",
+                "description": "Join a group.",
+                "operationId": "join_group_groups__group_id__join_post",
+                "security": [
+                    {
+                        "OAuth2PasswordBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "group_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Group Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/groups/{group_id}/leave": {
+            "post": {
+                "tags": [
+                    "groups"
+                ],
+                "summary": "Leave Group",
+                "description": "Leave a group.",
+                "operationId": "leave_group_groups__group_id__leave_post",
+                "security": [
+                    {
+                        "OAuth2PasswordBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "group_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Group Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/groups/{group_id}/members": {
+            "get": {
+                "tags": [
+                    "groups"
+                ],
+                "summary": "Get Members",
+                "description": "List group members.",
+                "operationId": "get_members_groups__group_id__members_get",
+                "parameters": [
+                    {
+                        "name": "group_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Group Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/User"
+                                    },
+                                    "title": "Response Get Members Groups  Group Id  Members Get"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/groups/{group_id}/posts": {
+            "post": {
+                "tags": [
+                    "groups"
+                ],
+                "summary": "Create Group Post",
+                "description": "Create a post within a group.",
+                "operationId": "create_group_post_groups__group_id__posts_post",
+                "security": [
+                    {
+                        "OAuth2PasswordBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "group_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Group Id"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PostCreate"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PostWithAuthor"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "groups"
+                ],
+                "summary": "Get Group Posts Endpoint",
+                "description": "Get posts for a specific group.",
+                "operationId": "get_group_posts_endpoint_groups__group_id__posts_get",
+                "parameters": [
+                    {
+                        "name": "group_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Group Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/PostWithAuthor"
+                                    },
+                                    "title": "Response Get Group Posts Endpoint Groups  Group Id  Posts Get"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/conversations/": {
+            "get": {
+                "tags": [
+                    "conversations"
+                ],
+                "summary": "Get Conversations",
+                "description": "Get all conversations the current user is part of.",
+                "operationId": "get_conversations_conversations__get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/ConversationRead"
+                                    },
+                                    "type": "array",
+                                    "title": "Response Get Conversations Conversations  Get"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "OAuth2PasswordBearer": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "conversations"
+                ],
+                "summary": "Create Conversation Endpoint",
+                "description": "Create a new one-to-one conversation.",
+                "operationId": "create_conversation_endpoint_conversations__post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ConversationCreate"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ConversationRead"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "OAuth2PasswordBearer": []
+                    }
+                ]
+            }
+        },
+        "/conversations/{conversation_id}": {
+            "get": {
+                "tags": [
+                    "conversations"
+                ],
+                "summary": "Get Conversation",
+                "description": "Get conversation details.",
+                "operationId": "get_conversation_conversations__conversation_id__get",
+                "security": [
+                    {
+                        "OAuth2PasswordBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "conversation_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Conversation Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ConversationRead"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/conversations/{conversation_id}/participants": {
+            "get": {
+                "tags": [
+                    "conversations"
+                ],
+                "summary": "Get Participants",
+                "description": "Get all participants in a conversation.",
+                "operationId": "get_participants_conversations__conversation_id__participants_get",
+                "security": [
+                    {
+                        "OAuth2PasswordBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "conversation_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Conversation Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/User"
+                                    },
+                                    "title": "Response Get Participants Conversations  Conversation Id  Participants Get"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/conversations/{conversation_id}/messages": {
+            "get": {
+                "tags": [
+                    "conversations"
+                ],
+                "summary": "Get Messages",
+                "description": "Get all messages in a conversation.",
+                "operationId": "get_messages_conversations__conversation_id__messages_get",
+                "security": [
+                    {
+                        "OAuth2PasswordBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "conversation_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Conversation Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/MessageRead"
+                                    },
+                                    "title": "Response Get Messages Conversations  Conversation Id  Messages Get"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "conversations"
+                ],
+                "summary": "Send Message",
+                "description": "Send a message to a conversation.",
+                "operationId": "send_message_conversations__conversation_id__messages_post",
+                "security": [
+                    {
+                        "OAuth2PasswordBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "conversation_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Conversation Id"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MessageCreate"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MessageRead"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/": {
+            "get": {
+                "summary": "Read Root",
+                "description": "Redirect root endpoint to API documentation.",
+                "operationId": "read_root__get",
+                "responses": {
+                    "307": {
+                        "description": "Successful Response"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "AttendanceStatusEnum": {
+                "type": "string",
+                "enum": [
+                    "attending",
+                    "interested",
+                    "not_attending"
+                ],
+                "title": "AttendanceStatusEnum",
+                "description": "Event attendance status enumeration."
+            },
+            "Body_login_auth_token_post": {
+                "properties": {
+                    "grant_type": {
+                        "anyOf": [
+                            {
+                                "type": "string",
+                                "pattern": "^password$"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Grant Type"
+                    },
+                    "username": {
+                        "type": "string",
+                        "title": "Username"
+                    },
+                    "password": {
+                        "type": "string",
+                        "format": "password",
+                        "title": "Password"
+                    },
+                    "scope": {
+                        "type": "string",
+                        "title": "Scope",
+                        "default": ""
+                    },
+                    "client_id": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Client Id"
+                    },
+                    "client_secret": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "format": "password",
+                        "title": "Client Secret"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "username",
+                    "password"
+                ],
+                "title": "Body_login_auth_token_post"
+            },
+            "CommentRequest": {
+                "properties": {
+                    "content": {
+                        "type": "string",
+                        "minLength": 1,
+                        "title": "Content"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "content"
+                ],
+                "title": "CommentRequest",
+                "description": "Request model for creating/updating a comment."
+            },
+            "CommentWithAuthor": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "title": "Id"
+                    },
+                    "content": {
+                        "type": "string",
+                        "title": "Content"
+                    },
+                    "author_id": {
+                        "type": "integer",
+                        "title": "Author Id"
+                    },
+                    "group_id": {
+                        "anyOf": [
+                            {
+                                "type": "integer"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Group Id"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "title": "Created At"
+                    },
+                    "author_name": {
+                        "type": "string",
+                        "title": "Author Name"
+                    },
+                    "post_id": {
+                        "type": "integer",
+                        "title": "Post Id"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "id",
+                    "content",
+                    "author_id",
+                    "created_at",
+                    "author_name",
+                    "post_id"
+                ],
+                "title": "CommentWithAuthor",
+                "description": "Response model for comment with author details."
+            },
+            "ConversationCreate": {
+                "properties": {
+                    "participant_id": {
+                        "type": "integer",
+                        "title": "Participant Id"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "participant_id"
+                ],
+                "title": "ConversationCreate",
+                "description": "Conversation creation model - one-to-one only."
+            },
+            "ConversationRead": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "title": "Id"
+                    },
+                    "title": {
+                        "type": "string",
+                        "title": "Title"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Created At"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "id",
+                    "title",
+                    "created_at"
+                ],
+                "title": "ConversationRead",
+                "description": "Conversation read model."
+            },
+            "Event": {
+                "properties": {
+                    "id": {
+                        "anyOf": [
+                            {
+                                "type": "integer"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Id"
+                    },
+                    "title": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "title": "Title"
+                    },
+                    "description": {
+                        "type": "string",
+                        "title": "Description"
+                    },
+                    "location": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "title": "Location"
+                    },
+                    "start_date": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Start Date"
+                    },
+                    "end_date": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "End Date"
+                    },
+                    "creator_id": {
+                        "type": "integer",
+                        "title": "Creator Id"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Created At"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "title",
+                    "description",
+                    "location",
+                    "start_date",
+                    "end_date",
+                    "creator_id"
+                ],
+                "title": "Event",
+                "description": "Event model for storing events in the university dorm."
+            },
+            "EventAttendee": {
+                "properties": {
+                    "id": {
+                        "anyOf": [
+                            {
+                                "type": "integer"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Id"
+                    },
+                    "user_id": {
+                        "type": "integer",
+                        "title": "User Id"
+                    },
+                    "event_id": {
+                        "type": "integer",
+                        "title": "Event Id"
+                    },
+                    "status": {
+                        "$ref": "#/components/schemas/AttendanceStatusEnum",
+                        "default": "attending"
+                    },
+                    "joined_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Joined At"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "user_id",
+                    "event_id"
+                ],
+                "title": "EventAttendee",
+                "description": "EventAttendee model for managing event participants."
+            },
+            "EventAttendeeResponse-Input": {
+                "properties": {
+                    "user": {
+                        "$ref": "#/components/schemas/UserRead"
+                    },
+                    "status": {
+                        "type": "string",
+                        "title": "Status"
+                    },
+                    "joined_at": {
+                        "type": "string",
+                        "title": "Joined At"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "user",
+                    "status",
+                    "joined_at"
+                ],
+                "title": "EventAttendeeResponse",
+                "description": "Response model for event attendee with user information."
+            },
+            "EventAttendeeResponse-Output": {
+                "properties": {
+                    "user": {
+                        "$ref": "#/components/schemas/UserRead"
+                    },
+                    "status": {
+                        "type": "string",
+                        "title": "Status"
+                    },
+                    "joined_at": {
+                        "type": "string",
+                        "title": "Joined At"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "user",
+                    "status",
+                    "joined_at"
+                ],
+                "title": "EventAttendeeResponse",
+                "description": "Response model for event attendee with user information."
+            },
+            "EventCreate": {
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "title": "Title"
+                    },
+                    "description": {
+                        "type": "string",
+                        "title": "Description"
+                    },
+                    "location": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "title": "Location"
+                    },
+                    "start_date": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Start Date"
+                    },
+                    "end_date": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "End Date"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "title",
+                    "description",
+                    "location",
+                    "start_date",
+                    "end_date"
+                ],
+                "title": "EventCreate",
+                "description": "Event creation model for creating new events."
+            },
+            "EventUpdate": {
+                "properties": {
+                    "title": {
+                        "anyOf": [
+                            {
+                                "type": "string",
+                                "maxLength": 255
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Title"
+                    },
+                    "description": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Description"
+                    },
+                    "location": {
+                        "anyOf": [
+                            {
+                                "type": "string",
+                                "maxLength": 255
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Location"
+                    },
+                    "start_date": {
+                        "anyOf": [
+                            {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Start Date"
+                    },
+                    "end_date": {
+                        "anyOf": [
+                            {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "End Date"
+                    }
+                },
+                "type": "object",
+                "title": "EventUpdate",
+                "description": "Event update model for modifying existing events."
+            },
+            "FriendListFilter": {
+                "type": "string",
+                "enum": [
+                    "accepted",
+                    "pending",
+                    "sent"
+                ],
+                "title": "FriendListFilter",
+                "description": "Filter options for listing friends."
+            },
+            "Friendship": {
+                "properties": {
+                    "id": {
+                        "anyOf": [
+                            {
+                                "type": "integer"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Id"
+                    },
+                    "requester_id": {
+                        "type": "integer",
+                        "title": "Requester Id"
+                    },
+                    "addressee_id": {
+                        "type": "integer",
+                        "title": "Addressee Id"
+                    },
+                    "status": {
+                        "$ref": "#/components/schemas/FriendshipStatusEnum",
+                        "default": "pending"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "requester_id",
+                    "addressee_id"
+                ],
+                "title": "Friendship",
+                "description": "Friendship model for managing user friendships."
+            },
+            "FriendshipStatusEnum": {
+                "type": "string",
+                "enum": [
+                    "pending",
+                    "accepted",
+                    "declined"
+                ],
+                "title": "FriendshipStatusEnum",
+                "description": "Friendship status enumeration."
+            },
+            "GroupCreate": {
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "maxLength": 100,
+                        "minLength": 3,
+                        "title": "Name"
+                    },
+                    "description": {
+                        "type": "string",
+                        "title": "Description"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "name",
+                    "description"
+                ],
+                "title": "GroupCreate",
+                "description": "Group creation model."
+            },
+            "GroupRead": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "title": "Id"
+                    },
+                    "name": {
+                        "type": "string",
+                        "title": "Name"
+                    },
+                    "description": {
+                        "type": "string",
+                        "title": "Description"
+                    },
+                    "creator_id": {
+                        "type": "integer",
+                        "title": "Creator Id"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Created At"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "id",
+                    "name",
+                    "description",
+                    "creator_id",
+                    "created_at"
+                ],
+                "title": "GroupRead",
+                "description": "Group read model."
+            },
+            "HTTPValidationError": {
+                "properties": {
+                    "detail": {
+                        "items": {
+                            "$ref": "#/components/schemas/ValidationError"
+                        },
+                        "type": "array",
+                        "title": "Detail"
+                    }
+                },
+                "type": "object",
+                "title": "HTTPValidationError"
+            },
+            "LikesInfo": {
+                "properties": {
+                    "likes_count": {
+                        "type": "integer",
+                        "title": "Likes Count"
+                    },
+                    "liked_by_current_user": {
+                        "type": "boolean",
+                        "title": "Liked By Current User"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "likes_count",
+                    "liked_by_current_user"
+                ],
+                "title": "LikesInfo",
+                "description": "Response model for post likes information."
+            },
+            "MessageCreate": {
+                "properties": {
+                    "content": {
+                        "type": "string",
+                        "minLength": 1,
+                        "title": "Content"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "content"
+                ],
+                "title": "MessageCreate",
+                "description": "Message creation model."
+            },
+            "MessageRead": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "title": "Id"
+                    },
+                    "content": {
+                        "type": "string",
+                        "title": "Content"
+                    },
+                    "sender_id": {
+                        "type": "integer",
+                        "title": "Sender Id"
+                    },
+                    "sender_name": {
+                        "type": "string",
+                        "title": "Sender Name"
+                    },
+                    "conversation_id": {
+                        "type": "integer",
+                        "title": "Conversation Id"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "title": "Created At"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "id",
+                    "content",
+                    "sender_id",
+                    "sender_name",
+                    "conversation_id",
+                    "created_at"
+                ],
+                "title": "MessageRead",
+                "description": "Message read model with sender information."
+            },
+            "Post": {
+                "properties": {
+                    "id": {
+                        "anyOf": [
+                            {
+                                "type": "integer"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Id"
+                    },
+                    "content": {
+                        "type": "string",
+                        "title": "Content"
+                    },
+                    "author_id": {
+                        "type": "integer",
+                        "title": "Author Id"
+                    },
+                    "group_id": {
+                        "anyOf": [
+                            {
+                                "type": "integer"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Group Id"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Created At"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "content",
+                    "author_id"
+                ],
+                "title": "Post",
+                "description": "Post model for storing user posts."
+            },
+            "PostCreate": {
+                "properties": {
+                    "content": {
+                        "type": "string",
+                        "minLength": 1,
+                        "title": "Content"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "content"
+                ],
+                "title": "PostCreate",
+                "description": "Request model for creating a post."
+            },
+            "PostLike": {
+                "properties": {
+                    "id": {
+                        "anyOf": [
+                            {
+                                "type": "integer"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Id"
+                    },
+                    "user_id": {
+                        "type": "integer",
+                        "title": "User Id"
+                    },
+                    "post_id": {
+                        "type": "integer",
+                        "title": "Post Id"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Created At"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "user_id",
+                    "post_id"
+                ],
+                "title": "PostLike",
+                "description": "PostLike model for managing likes on posts. Each user can like a post only once."
+            },
+            "PostWithAuthor": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "title": "Id"
+                    },
+                    "content": {
+                        "type": "string",
+                        "title": "Content"
+                    },
+                    "author_id": {
+                        "type": "integer",
+                        "title": "Author Id"
+                    },
+                    "group_id": {
+                        "anyOf": [
+                            {
+                                "type": "integer"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Group Id"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "title": "Created At"
+                    },
+                    "author_name": {
+                        "type": "string",
+                        "title": "Author Name"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "id",
+                    "content",
+                    "author_id",
+                    "created_at",
+                    "author_name"
+                ],
+                "title": "PostWithAuthor",
+                "description": "Response model for post with author details."
+            },
+            "ProfileCommentWithAuthor": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "title": "Id"
+                    },
+                    "content": {
+                        "type": "string",
+                        "title": "Content"
+                    },
+                    "author_id": {
+                        "type": "integer",
+                        "title": "Author Id"
+                    },
+                    "group_id": {
+                        "anyOf": [
+                            {
+                                "type": "integer"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Group Id"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "title": "Created At"
+                    },
+                    "author_name": {
+                        "type": "string",
+                        "title": "Author Name"
+                    },
+                    "profile_user_id": {
+                        "type": "integer",
+                        "title": "Profile User Id"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "id",
+                    "content",
+                    "author_id",
+                    "created_at",
+                    "author_name",
+                    "profile_user_id"
+                ],
+                "title": "ProfileCommentWithAuthor",
+                "description": "Response model for profile comment with author details."
+            },
+            "TokenWithUser": {
+                "properties": {
+                    "access_token": {
+                        "type": "string",
+                        "title": "Access Token"
+                    },
+                    "token_type": {
+                        "type": "string",
+                        "title": "Token Type"
+                    },
+                    "user": {
+                        "$ref": "#/components/schemas/UserRead"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "access_token",
+                    "token_type",
+                    "user"
+                ],
+                "title": "TokenWithUser",
+                "description": "Token response with user information."
+            },
+            "User": {
+                "properties": {
+                    "id": {
+                        "anyOf": [
+                            {
+                                "type": "integer"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Id"
+                    },
+                    "email": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "title": "Email"
+                    },
+                    "username": {
+                        "type": "string",
+                        "maxLength": 50,
+                        "title": "Username"
+                    },
+                    "first_name": {
+                        "type": "string",
+                        "maxLength": 100,
+                        "title": "First Name"
+                    },
+                    "last_name": {
+                        "type": "string",
+                        "maxLength": 100,
+                        "title": "Last Name"
+                    },
+                    "hashed_password": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "title": "Hashed Password"
+                    },
+                    "role": {
+                        "$ref": "#/components/schemas/UserRole",
+                        "default": "user"
+                    },
+                    "is_active": {
+                        "type": "boolean",
+                        "title": "Is Active",
+                        "default": false
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Created At"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "email",
+                    "username",
+                    "first_name",
+                    "last_name",
+                    "hashed_password"
+                ],
+                "title": "User",
+                "description": "User model for storing user information."
+            },
+            "UserCreate": {
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "title": "Email"
+                    },
+                    "username": {
+                        "type": "string",
+                        "maxLength": 50,
+                        "minLength": 3,
+                        "title": "Username"
+                    },
+                    "first_name": {
+                        "type": "string",
+                        "maxLength": 100,
+                        "minLength": 1,
+                        "title": "First Name"
+                    },
+                    "last_name": {
+                        "type": "string",
+                        "maxLength": 100,
+                        "minLength": 1,
+                        "title": "Last Name"
+                    },
+                    "password": {
+                        "type": "string",
+                        "minLength": 8,
+                        "title": "Password"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "email",
+                    "username",
+                    "first_name",
+                    "last_name",
+                    "password"
+                ],
+                "title": "UserCreate",
+                "description": "User creation model for user registration."
+            },
+            "UserRead": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "title": "Id"
+                    },
+                    "email": {
+                        "type": "string",
+                        "title": "Email"
+                    },
+                    "username": {
+                        "type": "string",
+                        "title": "Username"
+                    },
+                    "first_name": {
+                        "type": "string",
+                        "title": "First Name"
+                    },
+                    "last_name": {
+                        "type": "string",
+                        "title": "Last Name"
+                    },
+                    "role": {
+                        "$ref": "#/components/schemas/UserRole"
+                    },
+                    "is_active": {
+                        "type": "boolean",
+                        "title": "Is Active"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Created At"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "id",
+                    "email",
+                    "username",
+                    "first_name",
+                    "last_name",
+                    "role",
+                    "is_active",
+                    "created_at"
+                ],
+                "title": "UserRead",
+                "description": "User read model for API responses (excludes sensitive data)."
+            },
+            "UserRole": {
+                "type": "string",
+                "enum": [
+                    "user",
+                    "admin"
+                ],
+                "title": "UserRole",
+                "description": "User role enumeration for role-based access control."
+            },
+            "ValidationError": {
+                "properties": {
+                    "loc": {
+                        "items": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "integer"
+                                }
+                            ]
+                        },
+                        "type": "array",
+                        "title": "Location"
+                    },
+                    "msg": {
+                        "type": "string",
+                        "title": "Message"
+                    },
+                    "type": {
+                        "type": "string",
+                        "title": "Error Type"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "loc",
+                    "msg",
+                    "type"
+                ],
+                "title": "ValidationError"
+            }
+        },
+        "securitySchemes": {
+            "OAuth2PasswordBearer": {
+                "type": "oauth2",
+                "flows": {
+                    "password": {
+                        "scopes": {},
+                        "tokenUrl": "auth/token"
+                    }
+                }
+            }
+        }
+    }
+}

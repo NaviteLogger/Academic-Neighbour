@@ -1,0 +1,127 @@
+<div class="create-event-card bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 mb-6">
+    <form [formGroup]="eventForm" (ngSubmit)="onSubmit()">
+        <mat-card class="shadow-none! rounded-2xl!">
+            <!-- Collapsed State -->
+            @if (!isExpanded()) {
+            <div class="flex items-center gap-4 p-4 cursor-pointer hover:bg-gray-50 rounded-2xl transition-colors"
+                role="button" tabindex="0" (click)="onFocus()" (keyup.enter)="onFocus()" (keyup.space)="onFocus()">
+                <div
+                    class="w-12 h-12 rounded-full bg-linear-to-br from-amber-400 to-pink-500 flex items-center justify-center text-white">
+                    <mat-icon>event</mat-icon>
+                </div>
+                <span class="text-gray-500 text-lg">Utwórz nowy event...</span>
+            </div>
+            }
+
+            <!-- Expanded State -->
+            @if (isExpanded()) {
+            <div class="p-6 space-y-4">
+                <div class="flex items-center gap-3 mb-4">
+                    <div
+                        class="w-12 h-12 rounded-full bg-linear-to-br from-amber-400 to-pink-500 flex items-center justify-center text-white">
+                        <mat-icon>event</mat-icon>
+                    </div>
+                    <h2 class="text-2xl font-bold text-gray-800">Utwórz nowy event</h2>
+                </div>
+
+                <!-- Title -->
+                <mat-form-field appearance="outline" class="w-full">
+                    <mat-label>Tytuł eventu</mat-label>
+                    <input matInput formControlName="title" placeholder="Wprowadź tytuł eventu..." maxlength="200">
+                    <mat-hint align="end">{{ titleControl.value.length }} / 200</mat-hint>
+                    @if (titleControl.invalid && titleControl.touched) {
+                    <mat-error>
+                        @if (titleControl.hasError('required')) {
+                        Tytuł jest wymagany
+                        }
+                        @if (titleControl.hasError('minlength')) {
+                        Tytuł musi mieć minimum 3 znaki
+                        }
+                    </mat-error>
+                    }
+                </mat-form-field>
+
+                <!-- Description -->
+                <mat-form-field appearance="outline" class="w-full">
+                    <mat-label>Opis</mat-label>
+                    <textarea matInput formControlName="description" placeholder="Opisz szczegóły eventu..." rows="4"
+                        maxlength="2000" class="resize-none"></textarea>
+                    <mat-hint align="end">{{ descriptionControl.value.length }} / 2000</mat-hint>
+                    @if (descriptionControl.invalid && descriptionControl.touched) {
+                    <mat-error>
+                        @if (descriptionControl.hasError('required')) {
+                        Opis jest wymagany
+                        }
+                        @if (descriptionControl.hasError('minlength')) {
+                        Opis musi mieć minimum 10 znaków
+                        }
+                    </mat-error>
+                    }
+                </mat-form-field>
+
+                <!-- Location -->
+                <mat-form-field appearance="outline" class="w-full">
+                    <mat-label>Lokalizacja</mat-label>
+                    <input matInput formControlName="location" placeholder="Gdzie odbędzie się event?" maxlength="300">
+                    <mat-icon matPrefix class="mr-2 text-gray-500">place</mat-icon>
+                    <mat-hint align="end">{{ locationControl.value.length }} / 300</mat-hint>
+                    @if (locationControl.invalid && locationControl.touched) {
+                    <mat-error>
+                        @if (locationControl.hasError('required')) {
+                        Lokalizacja jest wymagana
+                        }
+                        @if (locationControl.hasError('minlength')) {
+                        Lokalizacja musi mieć minimum 3 znaki
+                        }
+                    </mat-error>
+                    }
+                </mat-form-field>
+
+                <!-- Date Range -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Start Date -->
+                    <mat-form-field appearance="outline" class="w-full">
+                        <mat-label>Data rozpoczęcia</mat-label>
+                        <input matInput [matDatepicker]="startPicker" formControlName="start_date" [min]="minDate"
+                            placeholder="DD/MM/YYYY">
+                        <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #startPicker></mat-datepicker>
+                        @if (startDateControl.invalid && startDateControl.touched) {
+                        <mat-error>
+                            Data rozpoczęcia jest wymagana
+                        </mat-error>
+                        }
+                    </mat-form-field>
+
+                    <!-- End Date -->
+                    <mat-form-field appearance="outline" class="w-full">
+                        <mat-label>Data zakończenia</mat-label>
+                        <input matInput [matDatepicker]="endPicker" formControlName="end_date" [min]="minDate"
+                            placeholder="DD/MM/YYYY">
+                        <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #endPicker></mat-datepicker>
+                        @if (endDateControl.invalid && endDateControl.touched) {
+                        <mat-error>
+                            Data zakończenia jest wymagana
+                        </mat-error>
+                        }
+                    </mat-form-field>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex items-center justify-end gap-3 pt-2">
+                    <button mat-button type="button" (click)="onCancel()" class="text-gray-600">
+                        <mat-icon>close</mat-icon>
+                        <span class="ml-1">Anuluj</span>
+                    </button>
+                    <button mat-raised-button type="submit" [disabled]="!eventForm.valid"
+                        class="bg-linear-to-r from-amber-500 to-pink-500 text-white">
+                        <mat-icon>event_available</mat-icon>
+                        <span class="ml-1">Utwórz event</span>
+                    </button>
+                </div>
+            </div>
+            }
+        </mat-card>
+    </form>
+</div>

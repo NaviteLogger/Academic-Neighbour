@@ -1,0 +1,33 @@
+<form [formGroup]="loginForm">
+    @if (apiError) {
+    <div class="mb-4 p-3 bg-red-50 border border-red-300 rounded-lg">
+        <p class="text-sm text-red-600">{{ apiError }}</p>
+    </div>
+    }
+
+    <div class="mb-4">
+        <label for="login-username" class="block mb-2 text-sm font-medium text-gray-900">Nazwa użytkownika lub
+            email</label>
+        <input type="text" id="login-username" formControlName="username"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 placeholder-gray-400"
+            placeholder="jan_kowalski lub email@example.com">
+        <app-validation-errors [control]="loginForm.get('username')" controlName="Nazwa użytkownika lub email" />
+    </div>
+
+    <div class="mb-4">
+        <label for="login-password" class="block mb-2 text-sm font-medium text-gray-900">Hasło</label>
+        <input type="password" id="login-password" formControlName="password"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 placeholder-gray-400"
+            placeholder="••••••••">
+        <app-validation-errors [control]="loginForm.get('password')" controlName="Hasło" />
+    </div>
+
+    <app-submit-button text="Zaloguj się" [disabled]="loginForm.invalid" (buttonClick)="onSubmit()" />
+
+    <p class="mt-4 text-sm text-center text-gray-700">
+        Nowy w serwisie?
+        <a (click)="onSwitchToRegister()" (keyup.enter)="onSwitchToRegister()" tabindex="0" role="button"
+            class="font-medium text-blue-600 hover:underline cursor-pointer">Zarejestruj
+            się</a>
+    </p>
+</form>

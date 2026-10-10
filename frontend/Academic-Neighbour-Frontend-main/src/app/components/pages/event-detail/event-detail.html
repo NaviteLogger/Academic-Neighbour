@@ -1,0 +1,226 @@
+<div class="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
+    <div class="max-w-5xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+        <!-- Back Button -->
+        <button mat-button (click)="onGoBack()" class="mb-4">
+            <mat-icon>arrow_back</mat-icon>
+            <span class="ml-2">Powrót do eventów</span>
+        </button>
+
+        <!-- Loading State -->
+        @if (isLoading()) {
+        <div class="flex flex-col items-center justify-center p-16 bg-white rounded-2xl shadow-md">
+            <mat-spinner diameter="60"></mat-spinner>
+            <p class="text-gray-600 font-medium mt-4">Ładowanie eventu...</p>
+        </div>
+        }
+
+        <!-- Error State -->
+        @else if (errorMessage()) {
+        <div class="flex flex-col items-center justify-center p-16 bg-red-50 rounded-2xl border border-red-200">
+            <mat-icon class="text-red-500 text-5xl mb-3">error_outline</mat-icon>
+            <p class="text-red-700 font-semibold">{{ errorMessage() }}</p>
+        </div>
+        }
+
+        <!-- Event Content -->
+        @else if (event(); as ev) {
+        <div class="space-y-6">
+            <!-- Event Header Card -->
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                <!-- Event Title & Icon -->
+                <div class="bg-gradient-to-r from-amber-500 to-pink-500 px-8 py-6">
+                    <div class="flex items-start gap-4">
+                        <div
+                            class="shrink-0 w-16 h-16 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
+                            <mat-icon class="text-white !text-4xl !w-10 !h-10">event</mat-icon>
+                        </div>
+                        <div class="flex-1 text-white">
+                            <h1 class="text-3xl font-bold mb-2">{{ ev.title }}</h1>
+                            <div class="flex flex-wrap gap-4 text-sm opacity-90">
+                                <div class="flex items-center gap-1">
+                                    <mat-icon class="!text-lg">schedule</mat-icon>
+                                    <span>{{ formatDate(ev.start_date) }}</span>
+                                </div>
+                                @if (ev.location) {
+                                <div class="flex items-center gap-1">
+                                    <mat-icon class="!text-lg">place</mat-icon>
+                                    <span>{{ ev.location }}</span>
+                                </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Event Details -->
+                <div class="px-8 py-6">
+                    <h2 class="text-lg font-semibold text-gray-900 mb-3">Opis</h2>
+                    <p class="text-gray-700 leading-relaxed whitespace-pre-wrap">{{ ev.description }}</p>
+
+                    <!-- Event Dates -->
+                    <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="flex items-center gap-3 p-4 bg-amber-50 rounded-lg">
+                            <mat-icon class="text-amber-600">event</mat-icon>
+                            <div>
+                                <p class="text-sm font-medium text-gray-600">Rozpoczęcie</p>
+                                <p class="text-base font-semibold text-gray-900">{{ formatDate(ev.start_date) }}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 p-4 bg-pink-50 rounded-lg">
+                            <mat-icon class="text-pink-600">event</mat-icon>
+                            <div>
+                                <p class="text-sm font-medium text-gray-600">Zakończenie</p>
+                                <p class="text-base font-semibold text-gray-900">{{ formatDate(ev.end_date) }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Attendance Stats Card -->
+            <div class="bg-white rounded-2xl shadow-lg p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-bold text-gray-900">Uczestnictwo</h2>
+                    <button mat-stroked-button (click)="onToggleAttendees()" class="!rounded-full">
+                        <mat-icon>{{ showAttendees() ? 'expand_less' : 'expand_more' }}</mat-icon>
+                        <span class="ml-1">{{ showAttendees() ? 'Ukryj' : 'Pokaż' }} uczestników</span>
+                    </button>
+                </div>
+
+                <!-- Stats Grid -->
+                <div class="grid grid-cols-2 gap-4 mb-6">
+                    <div class="text-center p-4 bg-green-50 rounded-lg">
+                        <div class="text-3xl font-bold text-green-600">{{ attendingCount() }}</div>
+                        <div class="text-sm text-gray-600 mt-1">Uczestniczących</div>
+                    </div>
+                    <div class="text-center p-4 bg-blue-50 rounded-lg">
+                        <div class="text-3xl font-bold text-blue-600">{{ interestedCount() }}</div>
+                        <div class="text-sm text-gray-600 mt-1">Zainteresowanych</div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-wrap gap-3">
+                    @if (!currentUser()) {
+                    <button mat-raised-button color="primary" disabled class="!rounded-full">
+                        <mat-icon>login</mat-icon>
+                        <span class="ml-2">Zaloguj się, aby dołączyć</span>
+                    </button>
+                    } @else if (!isRegistered()) {
+                    @if (isRegistering()) {
+                    <button mat-raised-button color="primary" disabled class="rounded-full!">
+                        <mat-spinner diameter="20"></mat-spinner>
+                        <span class="ml-2">Rejestracja...</span>
+                    </button>
+                    } @else {
+                    <button mat-raised-button color="primary" (click)="onRegisterForEvent()" class="rounded-full!">
+                        <mat-icon>how_to_reg</mat-icon>
+                        <span class="ml-2">Zarejestruj się</span>
+                    </button>
+                    }
+                    } @else {
+                    <!-- Status Menu -->
+                    <button mat-raised-button [color]="isAttending() ? 'accent' : 'primary'"
+                        [matMenuTriggerFor]="statusMenu" class="!rounded-full">
+                        <mat-icon>{{ isAttending() ? 'check_circle' : 'star' }}</mat-icon>
+                        <span class="ml-2">
+                            @if (isAttending()) {
+                            Uczestniczę
+                            } @else if (isInterested()) {
+                            Jestem zainteresowany
+                            }
+                        </span>
+                        <mat-icon>arrow_drop_down</mat-icon>
+                    </button>
+                    <mat-menu #statusMenu="matMenu">
+                        <button mat-menu-item (click)="onUpdateStatus(AttendanceStatus.ATTENDING)">
+                            <mat-icon [class.text-accent]="isAttending()">check_circle</mat-icon>
+                            <span>Będę uczestniczyć</span>
+                        </button>
+                        <button mat-menu-item (click)="onUpdateStatus(AttendanceStatus.INTERESTED)">
+                            <mat-icon [class.text-primary]="isInterested()">star</mat-icon>
+                            <span>Jestem zainteresowany</span>
+                        </button>
+                        <mat-divider></mat-divider>
+                        <button mat-menu-item (click)="onUnregisterFromEvent()" class="text-red-600">
+                            <mat-icon>cancel</mat-icon>
+                            <span>Wypisz się</span>
+                        </button>
+                    </mat-menu>
+                    }
+                </div>
+
+                <!-- Attendees List -->
+                @if (showAttendees()) {
+                <div class="mt-6 space-y-4">
+                    <!-- Loading Attendees -->
+                    @if (isLoadingAttendees()) {
+                    <div class="flex items-center justify-center py-8">
+                        <mat-spinner diameter="40"></mat-spinner>
+                        <span class="ml-3 text-gray-600">Ładowanie uczestników...</span>
+                    </div>
+                    } @else {
+                    <!-- Attending Users -->
+                    @if (attendingUsers().length > 0) {
+                    <div>
+                        <h3 class="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
+                            <mat-icon class="text-green-600 text-base!">check_circle</mat-icon>
+                            Uczestniczą ({{ attendingUsers().length }})
+                        </h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            @for (attendee of attendingUsers(); track attendee.user.id; let i = $index) {
+                            <div class="flex items-center gap-3 p-3 bg-green-50 rounded-lg">
+                                <div
+                                    [class]="'w-10 h-10 rounded-full flex items-center justify-center text-white text-sm font-bold ' + getGradientClass(i)">
+                                    {{ getInitials(attendee.user.first_name + ' ' + attendee.user.last_name) }}
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="font-medium text-gray-900 truncate">{{ attendee.user.first_name }} {{
+                                        attendee.user.last_name }}</p>
+                                    <p class="text-xs text-gray-500 truncate">@{{ attendee.user.username }}</p>
+                                </div>
+                            </div>
+                            }
+                        </div>
+                    </div>
+                    }
+
+                    <!-- Interested Users -->
+                    @if (interestedUsers().length > 0) {
+                    <div>
+                        <h3 class="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
+                            <mat-icon class="text-blue-600 text-base!">star</mat-icon>
+                            Zainteresowani ({{ interestedUsers().length }})
+                        </h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            @for (attendee of interestedUsers(); track attendee.user.id; let i = $index) {
+                            <div class="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
+                                <div
+                                    [class]="'w-10 h-10 rounded-full flex items-center justify-center text-white text-sm font-bold ' + getGradientClass(i)">
+                                    {{ getInitials(attendee.user.first_name + ' ' + attendee.user.last_name) }}
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="font-medium text-gray-900 truncate">{{ attendee.user.first_name }} {{
+                                        attendee.user.last_name }}</p>
+                                    <p class="text-xs text-gray-500 truncate">@{{ attendee.user.username }}</p>
+                                </div>
+                            </div>
+                            }
+                        </div>
+                    </div>
+                    }
+
+                    @if (attendees().length === 0) {
+                    <div class="text-center py-8 text-gray-500">
+                        <mat-icon class="text-5xl mb-2">people_outline</mat-icon>
+                        <p>Nikt jeszcze się nie zarejestrował</p>
+                    </div>
+                    }
+                    }
+                </div>
+                }
+            </div>
+        </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,29 @@
+/* Comment list animations */
+.comment-item {
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Compact icon buttons */
+.comment-item .mat-mdc-icon-button {
+    width: 32px;
+    height: 32px;
+    padding: 4px;
+}
+
+.comment-item .mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+}

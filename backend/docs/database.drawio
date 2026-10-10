@@ -1,0 +1,101 @@
+erDiagram
+    users {
+        INTEGER id PK
+        VARCHAR email UNIQUE
+        VARCHAR username UNIQUE
+        VARCHAR hashed_password
+        VARCHAR first_name
+        VARCHAR last_name
+        VARCHAR role
+        BOOLEAN is_active
+        TIMESTAMP created_at
+    }
+
+    friendships {
+        INTEGER requester_id FK
+        INTEGER addressee_id FK
+        VARCHAR status
+    }
+
+    posts {
+        INTEGER id PK
+        TEXT content
+        INTEGER author_id FK
+        TIMESTAMP created_at
+    }
+
+    comments {
+        INTEGER id PK
+        TEXT content
+        INTEGER author_id FK
+        INTEGER post_id FK
+    }
+
+    post_likes {
+        INTEGER id PK
+        INTEGER user_id FK
+        INTEGER post_id FK
+        DATETIME created_at
+    }
+
+    conversations {
+        INTEGER id PK
+        VARCHAR title
+    }
+
+    conversation_participants {
+        INTEGER user_id FK
+        INTEGER conversation_id FK
+    }
+
+    messages {
+        INTEGER id PK
+        TEXT content
+        INTEGER sender_id FK
+        INTEGER conversation_id FK
+    }
+
+    events {
+        INTEGER id PK
+        VARCHAR name
+        TIMESTAMP start_time
+        INTEGER creator_id FK
+    }
+
+    event_attendees {
+        INTEGER user_id FK
+        INTEGER event_id FK
+        VARCHAR status
+    }
+
+    pages {
+        INTEGER id PK
+        VARCHAR name
+        INTEGER owner_id FK
+    }
+
+    page_followers {
+        INTEGER user_id FK
+        INTEGER page_id FK
+    }
+
+    users ||--o{ friendships : "requests"
+    users ||--o{ friendships : "receives"
+    users ||--o{ posts : "writes"
+    users ||--o{ comments : "writes"
+    users ||--o{ post_likes : "likes"
+    users ||--o{ messages : "sends"
+    users ||--o{ groups : "owns"
+    users ||--o{ events : "creates"
+    users ||--o{ pages : "owns"
+    posts ||--o{ comments : "has"
+    posts ||--o{ post_likes : "receives"
+    conversations ||--o{ messages : "contains"
+    conversations ||--|{ conversation_participants : "has"
+    users ||--|{ conversation_participants : "is_in"
+    events ||--|{ event_attendees : "has"
+    users ||--|{ event_attendees : "is_in"
+    pages ||--|{ page_followers : "has"
+    users ||--|{ page_followers : "follows"
+    groups ||--o{ posts : "has"
+    pages ||--o{ posts : "has"

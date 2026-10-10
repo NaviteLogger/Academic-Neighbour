@@ -1,0 +1,46 @@
+<div class="create-post-container">
+    <form [formGroup]="postForm" (ngSubmit)="onSubmit()" class="create-post-form">
+        <div class="post-input-wrapper">
+            <div class="user-avatar">
+
+            </div>
+
+            <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                <mat-label>Co nowego, sąsiedzie?</mat-label>
+                <textarea matInput formControlName="content" (focus)="onFocus()" [rows]="isExpanded() ? 5 : 1"
+                    placeholder="Podziel się swoimi myślami..."></textarea>
+                @if (isExpanded()) {
+                <mat-hint align="end" [class]="characterCountColor()">
+                    {{ characterCount() }} / 5000
+                </mat-hint>
+                }
+                @if (postForm.controls.content.invalid && (postForm.controls.content.dirty ||
+                postForm.controls.content.touched))
+                {
+                <mat-error>
+                    @if (postForm.controls.content.errors?.['required']) {
+                    Treść posta jest wymagana
+                    }
+                    @if (postForm.controls.content.errors?.['maxlength']) {
+                    Post jest za długi (max 5000 znaków)
+                    }
+                </mat-error>
+                }
+            </mat-form-field>
+        </div>
+
+        @if (isExpanded()) {
+        <div class="form-actions">
+            <button mat-stroked-button type="button" (click)="onCancel()">
+                <mat-icon>close</mat-icon>
+                <span>Anuluj</span>
+            </button>
+            <button mat-raised-button color="primary" type="submit"
+                [disabled]="!postForm.valid || characterCount() === 0">
+                <mat-icon>send</mat-icon>
+                <span>Opublikuj</span>
+            </button>
+        </div>
+        }
+    </form>
+</div>

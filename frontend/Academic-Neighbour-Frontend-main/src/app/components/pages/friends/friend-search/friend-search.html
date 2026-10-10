@@ -1,0 +1,96 @@
+<div class="friend-search-container">
+    <!-- Search Input -->
+    <mat-form-field appearance="outline" class="w-full mb-4">
+        <mat-label>Szukaj użytkowników</mat-label>
+        <input matInput type="text" [formControl]="searchControl"
+            placeholder="Wpisz imię, nazwisko lub nazwę użytkownika..." autocomplete="off">
+        <mat-icon matPrefix>search</mat-icon>
+        @if (isSearching()) {
+        <mat-spinner matSuffix diameter="20"></mat-spinner>
+        }
+        @if (searchControl.value && !isSearching()) {
+        <button matSuffix mat-icon-button (click)="searchControl.setValue('')" matTooltip="Wyczyść wyszukiwanie">
+            <mat-icon>close</mat-icon>
+        </button>
+        }
+    </mat-form-field>
+
+    <!-- Search Results -->
+    @if (isSearching()) {
+    <div class="flex justify-center items-center p-8">
+        <mat-spinner diameter="40"></mat-spinner>
+    </div>
+    }
+
+    @if (searchError()) {
+    <div class="text-center text-red-600 p-8">
+        <mat-icon class="text-5xl">error_outline</mat-icon>
+        <p class="mt-2">{{ searchError() }}</p>
+    </div>
+    }
+
+    @if (!isSearching() && hasSearched() && searchResults().length === 0 && !searchError()) {
+    <div class="text-center text-gray-500 p-8">
+        <mat-icon class="text-5xl">person_search</mat-icon>
+        <p class="mt-2">Nie znaleziono użytkowników</p>
+        <p class="text-sm mt-1">Spróbuj innego wyszukiwania</p>
+    </div>
+    }
+
+    @if (searchResults().length > 0) {
+    <div class="space-y-3">
+        <p class="text-sm text-gray-600 mb-3">
+            Znaleziono {{ searchResults().length }} {{ searchResults().length === 1 ? 'użytkownika' : 'użytkowników' }}
+        </p>
+
+        @for (user of searchResults(); track user.id; let index = $index) {
+        <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+            <!-- Avatar -->
+            <button (click)="navigateToProfile(user.id)"
+                [class]="'w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg shrink-0 hover:scale-110 transition-transform cursor-pointer ' + getGradientClass(index)">
+                {{ getInitials(user) }}
+            </button>
+
+            <!-- User Info -->
+            <div class="flex-1 min-w-0">
+                <button (click)="navigateToProfile(user.id)" class="text-left hover:underline">
+                    <p class="font-semibold text-gray-900">
+                        {{ user.first_name }} {{ user.last_name }}
+                    </p>
+                </button>
+                <p class="text-sm text-gray-500">@{{ user.username }}</p>
+                @if (user.email) {
+                <p class="text-xs text-gray-400">{{ user.email }}</p>
+                }
+            </div>
+
+            <!-- Action Button -->
+            <div class="shrink-0">
+                @if (isSendingRequest(user.id)) {
+                <button mat-raised-button disabled class="bg-gray-300">
+                    <mat-spinner diameter="20" class="mr-2"></mat-spinner>
+                    Wysyłanie...
+                </button>
+                } @else {
+                <button mat-raised-button (click)="onSendFriendRequest(user.id)"
+                    class="bg-amber-500 text-white hover:bg-amber-600" matTooltip="Wyślij zaproszenie do znajomych">
+                    <mat-icon>person_add</mat-icon>
+                    <span class="ml-2">Dodaj</span>
+                </button>
+                }
+            </div>
+        </div>
+        }
+    </div>
+    }
+
+    @if (!hasSearched() && !isSearching()) {
+    <div class="text-center text-gray-400 p-8">
+        <mat-icon class="text-6xl mb-3">person_search</mat-icon>
+        <p class="text-lg font-medium mb-2">Wyszukaj znajomych</p>
+        <p class="text-sm">
+            Wpisz imię, nazwisko lub nazwę użytkownika, aby znaleźć osoby, które znasz
+        </p>
+    </div>
+    }
+</div>

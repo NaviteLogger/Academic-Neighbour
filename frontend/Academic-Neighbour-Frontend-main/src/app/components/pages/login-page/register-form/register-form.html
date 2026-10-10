@@ -1,0 +1,55 @@
+<form [formGroup]="registerForm">
+    @if (apiError) {
+    <div class="mb-4 p-3 bg-red-50 border border-red-300 rounded-lg">
+        <p class="text-sm text-red-600">{{ apiError }}</p>
+    </div>
+    }
+
+    <div class="mb-4">
+        <label for="reg-email" class="block mb-2 text-sm font-medium text-gray-900">Adres email</label>
+        <input type="email" id="reg-email" formControlName="email"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 placeholder-gray-400"
+            placeholder="email@example.com">
+        <app-validation-errors [control]="registerForm.get('email')" controlName="Adres email" />
+    </div>
+
+    <div class="mb-4">
+        <label for="username" class="block mb-2 text-sm font-medium text-gray-900">Nazwa użytkownika</label>
+        <input type="text" id="username" formControlName="username"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 placeholder-gray-400"
+            placeholder="jan_kowalski">
+        <app-validation-errors [control]="registerForm.get('username')" controlName="Nazwa użytkownika" />
+    </div>
+
+    <div class="mb-4">
+        <label for="reg-password" class="block mb-2 text-sm font-medium text-gray-900">Hasło</label>
+        <input type="password" id="reg-password" formControlName="password"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 placeholder-gray-400"
+            placeholder="Minimum 8 znaków">
+        <app-validation-errors [control]="registerForm.get('password')" controlName="Hasło" />
+    </div>
+
+    <div class="mb-4">
+        <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900">Imię</label>
+        <input type="text" id="first_name" formControlName="first_name"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 placeholder-gray-400"
+            placeholder="Jan">
+        <app-validation-errors [control]="registerForm.get('first_name')" controlName="Imię" />
+    </div>
+
+    <div class="mb-4">
+        <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900">Nazwisko</label>
+        <input type="text" id="last_name" formControlName="last_name"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 placeholder-gray-400"
+            placeholder="Kowalski">
+        <app-validation-errors [control]="registerForm.get('last_name')" controlName="Nazwisko" />
+    </div>
+
+    <app-submit-button text="Zarejestruj się" [disabled]="registerForm.invalid" (buttonClick)="onSubmit()" />
+
+    <p class="mt-4 text-sm text-center text-gray-700">
+        Masz już konto?
+        <button type="button" (click)="onSwitchToLogin()"
+            class="font-medium text-blue-600 hover:underline cursor-pointer">Zaloguj się</button>
+    </p>
+</form>

@@ -1,0 +1,61 @@
+<div class="friend-request-list-container">
+
+  @if (isLoading()) {
+    <div class="flex justify-center items-center p-8">
+      <mat-spinner diameter="50"></mat-spinner>
+    </div>
+  }
+
+  @if (hasError()) {
+    <div class="text-center text-red-600 p-8">
+      <mat-icon class="text-5xl">error_outline</mat-icon>
+      <p class="mt-2">{{ errorMessage() }}</p>
+      <button mat-stroked-button color="warn" (click)="loadRequests()" class="mt-4">
+        Spróbuj ponownie
+      </button>
+    </div>
+  }
+
+  @if (isEmpty()) {
+    <div class="text-center text-gray-500 p-8">
+      <mat-icon class="text-5xl">mark_email_unread</mat-icon>
+      <p class="mt-2">Nie masz obecnie żadnych zaproszeń do znajomych.</p>
+    </div>
+  }
+
+  @if (hasRequests()) {
+    <mat-list role="list">
+      @for (request of requests(); track request.id) {
+        <mat-list-item role="listitem" class="h-auto py-3">
+          <div matListItemAvatar class="shrink-0">
+            <div class="w-12 h-12 rounded-full bg-linear-to-br from-blue-400 to-indigo-500
+                        flex items-center justify-center text-white font-bold text-lg shadow-md">
+              {{ getInitials(request) }}
+            </div>
+          </div>
+          
+          <div matListItemTitle class="font-semibold text-gray-800 text-base">
+            {{ request.first_name }} {{ request.last_name }}
+          </div>
+          <div matListItemLine class="text-sm text-gray-500">
+            @<span>{{ request.username }}</span>
+          </div>
+
+          <div matListItemMeta class="ml-auto flex gap-2">
+            <button mat-icon-button color="primary" 
+                    matTooltip="Akceptuj zaproszenie" 
+                    (click)="acceptRequest(request.id)">
+              <mat-icon>check_circle</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" 
+                    matTooltip="Odrzuć zaproszenie" 
+                    (click)="declineRequest(request.id)">
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </div>
+        </mat-list-item>
+      }
+    </mat-list>
+  }
+
+</div>

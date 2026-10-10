@@ -1,0 +1,95 @@
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.create-post-container {
+    margin-bottom: 1.5rem;
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    animation: fadeInDown 0.4s ease-out;
+}
+
+.create-post-container:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.create-post-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.post-input-wrapper {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+}
+
+.user-avatar {
+    width: 3rem;
+    height: 3rem;
+    min-width: 3rem;
+    border-radius: 9999px;
+    background: linear-gradient(to bottom right, #fbbf24, #ec4899);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 1.25rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.post-input-wrapper mat-form-field {
+    flex: 1;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-left: 3.75rem;
+}
+
+.form-actions button mat-icon {
+    margin-right: 0.5rem;
+}
+
+.form-actions button[mat-raised-button] {
+    background: linear-gradient(to right, #fbbf24, #ec4899);
+    color: white;
+}
+
+.form-actions button[mat-raised-button]:hover:not(:disabled) {
+    background: linear-gradient(to right, #f59e0b, #db2777);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+    transition: all 0.2s;
+}
+
+.form-actions button[mat-stroked-button]:hover {
+    background-color: #f9fafb;
+}
+
+/* Character count hint colors */
+mat-hint.text-red-500 {
+    color: #ef4444;
+}
+
+mat-hint.text-orange-500 {
+    color: #f59e0b;
+}
+
+mat-hint.text-gray-500 {
+    color: #6b7280;
+}

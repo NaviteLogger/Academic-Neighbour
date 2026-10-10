@@ -1,0 +1,236 @@
+<div class="min-h-screen bg-linear-to-b from-gray-50 to-gray-100">
+    <!-- Navigation Header -->
+    <app-feed-header></app-feed-header>
+
+    <!-- Feed Tabs -->
+    <app-feed-tabs [activeTab]="activeTab()" (tabChanged)="onTabChange($event)"></app-feed-tabs>
+
+    <!-- Main Content -->
+    <div class="max-w-4xl mx-auto px-4 pt-8 pb-8 sm:px-6 lg:px-8">
+        <!-- Page Title -->
+        <header class="mb-8 text-center sm:text-left animate-[fadeIn_0.6s_ease-out]">
+            <h1
+                class="text-5xl font-extrabold mb-3 bg-linear-to-r from-amber-500 to-pink-500 bg-clip-text text-transparent">
+                @switch (activeTab()) {
+                @case ('board') { Tablica }
+                @case ('events') { Eventy }
+                @case ('groups') { Grupy }
+                }
+            </h1>
+            <p class="text-lg text-gray-600 font-medium">
+                @switch (activeTab()) {
+                @case ('board') { Dziel się swoimi myślami ze społecznością }
+                @case ('events') { Przeglądaj i zarządzaj eventami }
+                @case ('groups') { Dołącz do grup i poznawaj nowych ludzi }
+                }
+            </p>
+        </header>
+
+        <!-- Content -->
+        <div class="space-y-4">
+            <!-- Board Tab Content -->
+            @if (activeTab() === 'board') {
+            <app-create-post-form (createPost)="onCreatePost($event)"></app-create-post-form>
+
+            @if (hasError()) {
+            <div class="flex flex-col items-center justify-center p-8 bg-red-50 rounded-2xl border border-red-200">
+                @if (isRedirecting()) {
+                <mat-icon class="text-amber-500 text-5xl mb-3">lock</mat-icon>
+                <p class="text-amber-700 font-semibold mb-2">{{ errorMessage() }}</p>
+                <div class="flex items-center gap-2 text-amber-600">
+                    <div class="w-5 h-5 border-2 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
+                    <span>Przekierowywanie do logowania...</span>
+                </div>
+                } @else {
+                <mat-icon class="text-red-500 text-5xl mb-3">error_outline</mat-icon>
+                <p class="text-red-700 font-semibold mb-2">{{ errorMessage() }}</p>
+                <button mat-raised-button color="warn" (click)="retryLoad()">
+                    <mat-icon>refresh</mat-icon>
+                    <span class="ml-2">Spróbuj ponownie</span>
+                </button>
+                }
+            </div>
+            }
+
+            @if (isLoading()) {
+            <div class="flex flex-col items-center justify-center p-16 bg-white rounded-2xl shadow-md">
+                <div class="w-16 h-16 border-4 border-gray-200 border-t-amber-500 rounded-full animate-spin mb-4">
+                </div>
+                <p class="text-gray-600 font-medium">Ładowanie postów...</p>
+            </div>
+            } @else if (isEmpty()) {
+            <div class="flex flex-col items-center justify-center p-16 bg-white rounded-2xl shadow-md">
+                <div class="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center mb-4">
+                    <mat-icon class="text-gray-400 text-5xl! w-12! h-12!">inbox</mat-icon>
+                </div>
+                <p class="text-xl font-semibold text-gray-700 mb-2">Brak postów do wyświetlenia</p>
+                <p class="text-sm text-gray-500">Bądź pierwszą osobą, która coś opublikuje!</p>
+            </div>
+            } @else {
+            <div class="space-y-4">
+                @for (post of posts(); track post.id) {
+                <app-post [post]="post" (likePost)="onLikePost($event)" (refreshPost)="onRefreshPost()">
+                </app-post>
+                }
+            </div>
+            }
+            }
+
+            <!-- Events Tab Content -->
+            @if (activeTab() === 'events') {
+            <app-create-event-form (createEvent)="onCreateEvent($event)"></app-create-event-form>
+
+            @if (hasError()) {
+            <div class="flex flex-col items-center justify-center p-8 bg-red-50 rounded-2xl border border-red-200">
+                @if (isRedirecting()) {
+                <mat-icon class="text-amber-500 text-5xl mb-3">lock</mat-icon>
+                <p class="text-amber-700 font-semibold mb-2">{{ errorMessage() }}</p>
+                <div class="flex items-center gap-2 text-amber-600">
+                    <div class="w-5 h-5 border-2 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
+                    <span>Przekierowywanie do logowania...</span>
+                </div>
+                } @else {
+                <mat-icon class="text-red-500 text-5xl mb-3">error_outline</mat-icon>
+                <p class="text-red-700 font-semibold mb-2">{{ errorMessage() }}</p>
+                <button mat-raised-button color="warn" (click)="retryLoad()">
+                    <mat-icon>refresh</mat-icon>
+                    <span class="ml-2">Spróbuj ponownie</span>
+                </button>
+                }
+            </div>
+            }
+
+            @if (isLoading()) {
+            <div class="flex flex-col items-center justify-center p-16 bg-white rounded-2xl shadow-md">
+                <div class="w-16 h-16 border-4 border-gray-200 border-t-amber-500 rounded-full animate-spin mb-4">
+                </div>
+                <p class="text-gray-600 font-medium">Ładowanie eventów...</p>
+            </div>
+            } @else if (events().length === 0) {
+            <div class="flex flex-col items-center justify-center p-16 bg-white rounded-2xl shadow-md">
+                <div class="w-20 h-20 rounded-full bg-amber-100 flex items-center justify-center mb-4">
+                    <mat-icon class="text-amber-500 text-5xl! w-12! h-12!">event</mat-icon>
+                </div>
+                <p class="text-xl font-semibold text-gray-700 mb-2">Brak eventów</p>
+                <p class="text-sm text-gray-500">Nie ma jeszcze żadnych nadchodzących eventów</p>
+            </div>
+            } @else {
+            <div class="space-y-4">
+                @for (event of events(); track event.id) {
+                <div (click)="onNavigateToEvent(event.id)" (keyup.enter)="onNavigateToEvent(event.id)" tabindex="0"
+                    role="button"
+                    class="bg-white rounded-2xl shadow-md p-6 hover:shadow-lg transition-all cursor-pointer">
+                    <div class="flex items-start gap-4">
+                        <div
+                            class="shrink-0 w-16 h-16 bg-amber-100 rounded-xl flex flex-col items-center justify-center">
+                            <mat-icon class="text-amber-600">event</mat-icon>
+                        </div>
+                        <div class="grow">
+                            <h3 class="text-xl font-bold text-gray-800 mb-2">{{ event.title }}</h3>
+                            <p class="text-gray-600 mb-3 line-clamp-2">{{ event.description }}</p>
+                            <div class="flex flex-wrap gap-4 text-sm text-gray-500">
+                                <div class="flex items-center gap-1">
+                                    <mat-icon class="text-base">schedule</mat-icon>
+                                    <span>{{ event.start_date }}</span>
+                                </div>
+                                @if (event.location) {
+                                <div class="flex items-center gap-1">
+                                    <mat-icon class="text-base">place</mat-icon>
+                                    <span>{{ event.location }}</span>
+                                </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                }
+            </div>
+            }
+            }
+
+            <!-- Groups Tab Content -->
+            @if (activeTab() === 'groups') {
+
+            @if (hasError()) {
+            <div class="flex flex-col items-center justify-center p-8 bg-red-50 rounded-2xl border border-red-200">
+                @if (isRedirecting()) {
+                <mat-icon class="text-amber-500 text-5xl mb-3">lock</mat-icon>
+                <p class="text-amber-700 font-semibold mb-2">{{ errorMessage() }}</p>
+                <div class="flex items-center gap-2 text-amber-600">
+                    <div class="w-5 h-5 border-2 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
+                    <span>Przekierowywanie do logowania...</span>
+                </div>
+                } @else {
+                <mat-icon class="text-red-500 text-5xl mb-3">error_outline</mat-icon>
+                <p class="text-red-700 font-semibold mb-2">{{ errorMessage() }}</p>
+                <button mat-raised-button color="warn" (click)="retryLoad()">
+                    <mat-icon>refresh</mat-icon>
+                    <span class="ml-2">Spróbuj ponownie</span>
+                </button>
+                }
+            </div>
+            }
+
+            @if (isLoading()) {
+            <div class="flex flex-col items-center justify-center p-16 bg-white rounded-2xl shadow-md">
+                <div class="w-16 h-16 border-4 border-gray-200 border-t-amber-500 rounded-full animate-spin mb-4">
+                </div>
+                <p class="text-gray-600 font-medium">Ładowanie grup...</p>
+            </div>
+            } @else if (groups().length === 0) {
+            <div class="flex flex-col items-center justify-center p-16 bg-white rounded-2xl shadow-md">
+                <div class="w-20 h-20 rounded-full bg-pink-100 flex items-center justify-center mb-4">
+                    <mat-icon class="text-pink-500 text-5xl! w-12! h-12!">groups</mat-icon>
+                </div>
+                <p class="text-xl font-semibold text-gray-700 mb-2">Brak grup</p>
+                <p class="text-sm text-gray-500 mb-4">Nie ma jeszcze żadnych grup. Utwórz pierwszą!</p>
+            </div>
+            } @else {
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                @for (group of groups(); track group.id; let index = $index) {
+                <div (click)="onNavigateToGroup(group.id)" (keyup.enter)="onNavigateToGroup(group.id)" tabindex="0"
+                    role="button"
+                    class="bg-white rounded-2xl shadow-md p-6 hover:shadow-lg transition-all cursor-pointer">
+                    <div class="flex items-start gap-4 mb-4">
+                        <div
+                            [class]="'w-14 h-14 rounded-xl flex items-center justify-center text-white text-lg font-bold shrink-0 ' + getGradientClass(index)">
+                            {{ getGroupInitials(group.name) }}
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <h3 class="text-lg font-bold text-gray-900 mb-1 truncate">
+                                {{ group.name }}
+                            </h3>
+                            <p class="text-xs text-gray-500">
+                                Utworzona {{ group.created_at | date:'short' }}
+                            </p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 text-sm mb-4 line-clamp-2">
+                        {{ group.description }}
+                    </p>
+                    <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+                        <div class="flex items-center gap-2 text-gray-500 text-sm">
+                            <mat-icon class="text-base! w-5! h-5!">people</mat-icon>
+                            <span>{{ group.member_count || 0 }} {{ group.member_count === 1 ? 'członek' : 'członków'
+                                }}</span>
+                        </div>
+                        @if (group.is_member) {
+                        <button mat-raised-button (click)="onLeaveGroup(group.id, $event)"
+                            class="bg-red-500 text-white text-sm hover:bg-red-600">
+                            Opuść
+                        </button>
+                        } @else {
+                        <button mat-raised-button (click)="onJoinGroup(group.id, $event)"
+                            class="bg-amber-500 text-white text-sm hover:bg-amber-600">
+                            Dołącz
+                        </button>
+                        }
+                    </div>
+                </div>
+                }
+            </div>
+            }
+            }
+        </div>
+    </div>
+</div>

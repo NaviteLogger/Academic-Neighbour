@@ -1,0 +1,25 @@
+@if (control && control.invalid && (control.dirty || control.touched)) {
+      <div classs="mt-1 text-xs text-red-600">
+        
+        @if (control.hasError('required')) {
+          <p>{{ controlName }} jest polem wymaganym.</p>
+        }
+
+        @if (control.hasError('email')) {
+          <p>Proszę podać poprawny adres email.</p>
+        }
+
+        @if (control.hasError('minlength')) {
+          <p>
+            {{ controlName }} musi mieć przynajmniej 
+            {{ control.getError('minlength').requiredLength }} 
+            znaki.
+          </p>
+        }
+
+        @if (control.hasError('pattern')) {
+          <p>Niepoprawny format (oczekiwano np. 00-001).</p>
+        }
+
+        </div>
+    }

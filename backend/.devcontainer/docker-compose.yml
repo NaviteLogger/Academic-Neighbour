@@ -1,0 +1,21 @@
+services:
+  fastapi-devcontainer:
+    hostname: fastapi-devcontainer
+    container_name: fastapi-devcontainer
+    image: mcr.microsoft.com/devcontainers/python:latest
+    volumes:
+      - ../..:/workspaces:cached
+    command: sleep infinity
+
+  postgres:
+    image: postgres:latest
+    hostname: postgres
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=postgres
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_PASSWORD=postgres

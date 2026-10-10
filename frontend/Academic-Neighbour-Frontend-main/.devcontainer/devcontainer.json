@@ -1,0 +1,46 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/ubuntu
+{
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "bradlc.vscode-tailwindcss",
+                "Angular.ng-template",
+                "cyrilletuzi.angular-schematics",
+                "oven.bun-vscode",
+                "cweijan.vscode-database-client2",
+                "ecmel.vscode-html-css",
+                "pranaygp.vscode-css-peek",
+                "aar.xlf-editor",
+                "dbaeumer.vscode-eslint"
+            ]
+        }
+    },
+    "features": {
+        "ghcr.io/devcontainers/features/java:1": {
+            "antVersion": "latest",
+            "gradleVersion": "latest",
+            "groovyVersion": "latest",
+            "jdkDistro": "tem",
+            "mavenVersion": "latest",
+            "version": "latest"
+        }
+    },
+    "name": "Angular-Devcontainer",
+    "portsAttributes": {
+        "8000": {
+            "label": "Application",
+            "onAutoForward": "ignore"
+        }
+    },
+    "runArgs": [
+        "--name",
+        "academic-neighbour-frontend-devcontainer",
+        "--hostname",
+        "academic-neighbour-frontend-devcontainer"
+    ],
+    "postCreateCommand": "bun install"
+}

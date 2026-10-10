@@ -1,0 +1,15 @@
+/* WAŻNE: Używamy ::ng-deep, aby nadpisać domyślne style Angular Material 
+dla aktywnej zakładki, ponieważ standardowe style Tailwinda
+nie zadziałają na tych komponentach.
+*/
+
+:host ::ng-deep .mat-mdc-tab-link.mdc-tab--active {
+    /* Używamy kolorów z palety (amber-600) zdefiniowanej w aplikacji */
+    color: #D97706; 
+    border-color: #D97706;
+}
+
+/* Styl dla tła po najechaniu, aby pasował do feed-header */
+:host ::ng-deep .mat-mdc-tab-link:hover {
+    background-color: rgba(251, 191, 36, 0.05);
+}

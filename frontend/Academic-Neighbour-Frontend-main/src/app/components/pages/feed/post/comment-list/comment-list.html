@@ -1,0 +1,61 @@
+<div class="comment-list-container">
+    @if (sortedComments().length === 0) {
+    <div class="text-center py-6 text-gray-500">
+        <mat-icon class="text-4xl mb-2 opacity-50">chat_bubble_outline</mat-icon>
+        <p class="text-sm">Brak komentarzy. Bądź pierwszy!</p>
+    </div>
+    } @else {
+    <div class="space-y-3">
+        @for (comment of sortedComments(); track comment.id) {
+        <div class="comment-item bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors">
+            <div class="flex gap-3">
+                <!-- Avatar -->
+                <button (click)="navigateToProfile(comment.author_id)"
+                    class="w-10 h-10 rounded-full bg-linear-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white font-bold text-sm shrink-0 hover:scale-110 transition-transform cursor-pointer">
+                    {{ getAuthorInitial(comment.author_id) }}
+                </button>
+
+                <!-- Content -->
+                <div class="flex-1 min-w-0">
+                    <!-- Header -->
+                    <div class="flex items-start justify-between gap-2 mb-1">
+                        <div>
+                            <button (click)="navigateToProfile(comment.author_id)"
+                                class="font-semibold text-gray-900 hover:underline">{{ comment.author_name }}</button>
+                            <span class="text-xs text-gray-500 ml-2">{{ getFormattedDate(comment.created_at) }}</span>
+                        </div>
+
+                        <!-- Actions -->
+                        @if (canEditComment(comment) || canDeleteComment(comment)) {
+                        <div class="flex gap-1">
+                            @if (canEditComment(comment) && editingCommentId() !== comment.id) {
+                            <button mat-icon-button (click)="startEdit(comment.id)" matTooltip="Edytuj komentarz"
+                                class="text-blue-600 hover:bg-blue-50">
+                                <mat-icon class="text-sm">edit</mat-icon>
+                            </button>
+                            }
+                            @if (canDeleteComment(comment)) {
+                            <button mat-icon-button (click)="onDeleteComment(comment.id)" matTooltip="Usuń komentarz"
+                                class="text-red-600 hover:bg-red-50">
+                                <mat-icon class="text-sm">delete</mat-icon>
+                            </button>
+                            }
+                        </div>
+                        }
+                    </div>
+
+                    <!-- Comment content or edit form -->
+                    @if (editingCommentId() === comment.id) {
+                    <app-comment-form [postId]="postId()" [isEdit]="true" [initialContent]="comment.content"
+                        (submitComment)="onUpdateComment(comment.id, $event)" (cancelEdit)="cancelEdit()">
+                    </app-comment-form>
+                    } @else {
+                    <p class="text-gray-800 text-sm whitespace-pre-wrap wrap-break-word">{{ comment.content }}</p>
+                    }
+                </div>
+            </div>
+        </div>
+        }
+    </div>
+    }
+</div>

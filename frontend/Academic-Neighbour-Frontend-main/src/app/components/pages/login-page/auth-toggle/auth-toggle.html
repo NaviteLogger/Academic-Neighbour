@@ -1,0 +1,21 @@
+<div class="flex">
+      <button 
+        (click)="formChange.emit('login')"
+        [class.bg-blue-600]="activeForm === 'login'"
+        [class.text-white]="activeForm === 'login'"
+        [class.bg-gray-100]="activeForm !== 'login'"
+        [class.text-gray-700]="activeForm !== 'login'"
+        class="w-1/2 p-4 font-semibold text-center transition-colors duration-200 focus:outline-none">
+        Zaloguj
+      </button>
+
+      <button 
+        (click)="formChange.emit('register')"
+        [class.bg-blue-600]="activeForm === 'register'"
+        [class.text-white]="activeForm === 'register'"
+        [class.bg-gray-100]="activeForm !== 'register'"
+        [class.text-gray-700]="activeForm !== 'register'"
+        class="w-1/2 p-4 font-semibold text-center transition-colors duration-200 focus:outline-none">
+        Zarejestruj
+      </button>
+</div>

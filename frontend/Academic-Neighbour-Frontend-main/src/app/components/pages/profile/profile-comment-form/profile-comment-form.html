@@ -1,0 +1,40 @@
+<form (ngSubmit)="onSubmit()" class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+    <!-- Error Alert -->
+    @if (errorMessage()) {
+    <div class="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg flex items-start gap-2">
+        <span class="text-red-600 font-medium">⚠️</span>
+        <p class="text-red-700 text-sm">{{ errorMessage() }}</p>
+    </div>
+    }
+
+    <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Dodaj komentarz</mat-label>
+        <textarea matInput [formControl]="commentControl" rows="3" placeholder="Napisz coś miłego..."
+            [disabled]="isSubmitting()">
+        </textarea>
+        @if (commentControl.touched && commentControl.hasError('required')) {
+        <mat-error>Komentarz jest wymagany</mat-error>
+        }
+        @if (commentControl.touched && commentControl.hasError('minLength')) {
+        <mat-error>Komentarz musi mieć przynajmniej 1 znak</mat-error>
+        }
+        @if (commentControl.touched && commentControl.hasError('maxLength')) {
+        <mat-error>Komentarz nie może przekraczać 500 znaków</mat-error>
+        }
+        <mat-hint align="end">{{ getCharacterCount() }}</mat-hint>
+    </mat-form-field>
+
+    <div class="flex justify-end gap-2 mt-2">
+        <button type="button" mat-stroked-button (click)="onCancel()" [disabled]="isSubmitting()">
+            Anuluj
+        </button>
+        <button type="submit" mat-raised-button class="bg-amber-500 text-white hover:bg-amber-600"
+            [disabled]="isSubmitting() || commentControl.invalid">
+            @if (isSubmitting()) {
+            Wysyłanie...
+            } @else {
+            Opublikuj
+            }
+        </button>
+    </div>
+</form>

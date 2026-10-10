@@ -1,0 +1,36 @@
+<div class="comment-form-container p-4 bg-gray-50 rounded-lg">
+    <form [formGroup]="commentForm" (ngSubmit)="onSubmit()" class="space-y-3">
+        <mat-form-field appearance="outline" class="w-full">
+            <mat-label>{{ isEdit() ? 'Edytuj komentarz' : 'Dodaj komentarz' }}</mat-label>
+            <textarea matInput formControlName="content"
+                [placeholder]="isEdit() ? 'Zaktualizuj treść komentarza...' : 'Napisz komentarz...'" rows="3"
+                maxlength="500" class="resize-none">
+            </textarea>
+            <mat-hint align="end">{{ contentControl.value.length || 0 }} / 500</mat-hint>
+            @if (contentControl.invalid && contentControl.touched) {
+            <mat-error>
+                @if (contentControl.hasError('required')) {
+                Komentarz nie może być pusty
+                }
+                @if (contentControl.hasError('minlength')) {
+                Komentarz jest za krótki
+                }
+            </mat-error>
+            }
+        </mat-form-field>
+
+        <div class="flex items-center gap-2 justify-end">
+            @if (isEdit()) {
+            <button mat-button type="button" (click)="onCancel()" class="text-gray-600">
+                <mat-icon>close</mat-icon>
+                <span class="ml-1">Anuluj</span>
+            </button>
+            }
+            <button mat-raised-button color="primary" type="submit" [disabled]="!isFormValid"
+                class="bg-linear-to-r from-amber-500 to-pink-500">
+                <mat-icon>{{ isEdit() ? 'edit' : 'send' }}</mat-icon>
+                <span class="ml-1">{{ isEdit() ? 'Zaktualizuj' : 'Wyślij' }}</span>
+            </button>
+        </div>
+    </form>
+</div>

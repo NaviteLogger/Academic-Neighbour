@@ -1,0 +1,21 @@
+<footer class="w-full bg-white/80 backdrop-blur-md border-t border-white/30 text-gray-700 text-sm py-10">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between px-10 space-y-6 md:space-y-0">
+
+        <div class="text-center md:text-left max-w-sm">
+            <span class="font-semibold text-amber-600 text-base">🍻 Somsiad z akademika</span>
+            <p class="text-sm text-gray-600 mt-1">
+                Portal dla studentów, którzy wiedzą, że najlepsze znajomości zaczynają się od wspólnego piwa.
+            </p>
+        </div>
+
+        <div class="flex space-x-4">
+            <app-home-button></app-home-button>
+            <app-about-us-button></app-about-us-button>
+            <app-contact-button></app-contact-button>
+        </div>
+
+        <div class="text-xs text-gray-500">
+            © {{ currentYear() }} Somsiad z akademika
+        </div>
+    </div>
+</footer>

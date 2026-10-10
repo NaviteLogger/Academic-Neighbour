@@ -1,0 +1,56 @@
+<div class="friend-list-container">
+
+  @if (isLoading()) {
+  <div class="flex justify-center items-center p-8">
+    <mat-spinner diameter="50"></mat-spinner>
+  </div>
+  }
+
+  @if (hasError()) {
+  <div class="text-center text-red-600 p-8">
+    <mat-icon class="text-5xl">error_outline</mat-icon>
+    <p class="mt-2">{{ errorMessage() }}</p>
+    <button mat-stroked-button color="warn" (click)="loadFriends()" class="mt-4">
+      Spróbuj ponownie
+    </button>
+  </div>
+  }
+
+  @if (isEmpty()) {
+  <div class="text-center text-gray-500 p-8">
+    <mat-icon class="text-5xl">people_outline</mat-icon>
+    <p class="mt-2">Nie masz jeszcze żadnych znajomych.</p>
+  </div>
+  }
+
+  @if (hasFriends()) {
+  <mat-list role="list">
+    @for (friend of friends(); track friend.id) {
+    <mat-list-item role="listitem" class="h-auto py-3">
+      <button (click)="navigateToProfile(friend.id)" matListItemAvatar
+        class="shrink-0 cursor-pointer hover:scale-110 transition-transform">
+        <div class="w-12 h-12 rounded-full bg-linear-to-br from-amber-400 to-pink-500
+                        flex items-center justify-center text-white font-bold text-lg shadow-md">
+          {{ getInitials(friend) }}
+        </div>
+      </button>
+
+      <button (click)="navigateToProfile(friend.id)" matListItemTitle
+        class="font-semibold text-gray-800 text-base text-left hover:underline">
+        {{ friend.first_name }} {{ friend.last_name }}
+      </button>
+      <div matListItemLine class="text-sm text-gray-500">
+        @<span>{{ friend.username }}</span>
+      </div>
+
+      <div matListItemMeta class="ml-auto">
+        <button mat-icon-button color="warn" matTooltip="Usuń znajomego" (click)="removeFriend(friend.id)">
+          <mat-icon>person_remove</mat-icon>
+        </button>
+      </div>
+    </mat-list-item>
+    }
+  </mat-list>
+  }
+
+</div>

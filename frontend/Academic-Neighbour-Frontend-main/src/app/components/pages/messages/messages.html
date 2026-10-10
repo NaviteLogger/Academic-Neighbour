@@ -1,0 +1,242 @@
+<div class="min-h-screen bg-linear-to-b from-gray-50 to-gray-100">
+    <!-- Navigation Header -->
+    <app-feed-header></app-feed-header>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 pt-8 pb-8 sm:px-6 lg:px-8">
+        <!-- Page Title -->
+        <header class="mb-6 text-center sm:text-left animate-[fadeIn_0.6s_ease-out]">
+            <h1
+                class="text-5xl font-extrabold mb-3 bg-linear-to-r from-amber-500 to-pink-500 bg-clip-text text-transparent">
+                Wiadomości
+            </h1>
+            <p class="text-lg text-gray-600 font-medium">
+                Twoje prywatne rozmowy
+            </p>
+        </header>
+
+        <!-- Messages Layout -->
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden" style="height: calc(100vh - 280px);">
+            <div class="flex h-full">
+                <!-- Conversations/Friends List (Left Panel) -->
+                <div class="w-full md:w-1/3 border-r border-gray-200 flex flex-col">
+                    <!-- Tabs Header -->
+                    <div class="px-6 py-4 border-b border-gray-200">
+                        <mat-tab-group [selectedIndex]="activeTab() === 'conversations' ? 0 : 1"
+                            (selectedIndexChange)="onTabChange($event)" animationDuration="300ms" class="messages-tabs">
+                            <mat-tab label="Rozmowy">
+                                <ng-template mat-tab-label>
+                                    <mat-icon class="mr-2">chat</mat-icon>
+                                    Rozmowy
+                                </ng-template>
+                            </mat-tab>
+                            <mat-tab label="Znajomi">
+                                <ng-template mat-tab-label>
+                                    <mat-icon class="mr-2">people</mat-icon>
+                                    Znajomi
+                                </ng-template>
+                            </mat-tab>
+                        </mat-tab-group>
+                    </div>
+
+                    <!-- Conversations Tab Content -->
+                    @if (activeTab() === 'conversations') {
+                    <!-- Loading State -->
+                    @if (isLoadingConversations()) {
+                    <div class="flex-1 flex items-center justify-center">
+                        <mat-spinner diameter="40"></mat-spinner>
+                    </div>
+                    }
+
+                    <!-- Empty State -->
+                    @else if (conversations().length === 0) {
+                    <div class="flex-1 flex flex-col items-center justify-center p-6 text-center">
+                        <mat-icon class="text-gray-400 text-5xl mb-3">chat_bubble_outline</mat-icon>
+                        <p class="text-gray-600 font-medium">Brak rozmów</p>
+                        <p class="text-sm text-gray-500 mt-1">Rozpocznij nową rozmowę z przyjaciółmi</p>
+                    </div>
+                    }
+
+                    <!-- Conversations List -->
+                    @else {
+                    <div class="flex-1 overflow-y-auto">
+                        @for (conversation of conversations(); track conversation.id) {
+                        <div (click)="selectConversation(conversation)" (keyup.enter)="selectConversation(conversation)"
+                            [class.bg-amber-50]="selectedConversation()?.id === conversation.id" tabindex="0"
+                            role="button"
+                            class="px-6 py-4 border-b border-gray-100 cursor-pointer hover:bg-gray-50 transition-colors">
+                            <div class="flex items-center gap-3">
+                                <div
+                                    class="w-12 h-12 rounded-full bg-linear-to-br from-amber-400 to-pink-500 flex items-center justify-center text-white font-bold shrink-0">
+                                    {{ getInitials(conversation.displayName || conversation.title) }}
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="font-semibold text-gray-900 truncate">{{ conversation.displayName ||
+                                        conversation.title }}</p>
+                                    <p class="text-xs text-gray-500">{{ formatDate(conversation.created_at) }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        }
+                    </div>
+                    }
+                    }
+
+                    <!-- Friends Tab Content -->
+                    @if (activeTab() === 'friends') {
+                    <!-- Loading State -->
+                    @if (isLoadingFriends()) {
+                    <div class="flex-1 flex items-center justify-center">
+                        <mat-spinner diameter="40"></mat-spinner>
+                    </div>
+                    }
+
+                    <!-- Empty State -->
+                    @else if (friends().length === 0) {
+                    <div class="flex-1 flex flex-col items-center justify-center p-6 text-center">
+                        <mat-icon class="text-gray-400 text-5xl mb-3">people_outline</mat-icon>
+                        <p class="text-gray-600 font-medium">Brak znajomych</p>
+                        <p class="text-sm text-gray-500 mt-1">Dodaj znajomych, aby rozpocząć rozmowę</p>
+                    </div>
+                    }
+
+                    <!-- Friends List -->
+                    @else {
+                    <div class="flex-1 overflow-y-auto">
+                        @for (friend of friends(); track friend.id) {
+                        <div (click)="selectFriend(friend)" (keyup.enter)="selectFriend(friend)" tabindex="0"
+                            role="button" [class.opacity-50]="isCreatingConversation()"
+                            [class.pointer-events-none]="isCreatingConversation()"
+                            class="px-6 py-4 border-b border-gray-100 cursor-pointer hover:bg-gray-50 transition-colors">
+                            <div class="flex items-center gap-3">
+                                <div
+                                    class="w-12 h-12 rounded-full bg-linear-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white font-bold shrink-0">
+                                    {{ getInitials(friend.first_name + ' ' + friend.last_name) }}
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="font-semibold text-gray-900 truncate">
+                                        {{ friend.first_name }} {{ friend.last_name }}
+                                    </p>
+                                    <p class="text-xs text-gray-500 truncate">{{ '@' + friend.username }}</p>
+                                </div>
+                                <mat-icon class="text-gray-400">chevron_right</mat-icon>
+                            </div>
+                        </div>
+                        }
+                    </div>
+                    }
+                    }
+                </div>
+
+                <!-- Chat Area (Right Panel) -->
+                <div class="flex-1 flex flex-col">
+                    <!-- No Conversation Selected -->
+                    @if (!hasSelectedConversation()) {
+                    <div class="flex-1 flex flex-col items-center justify-center p-8 text-center">
+                        <div
+                            class="w-24 h-24 rounded-full bg-linear-to-br from-amber-100 to-pink-100 flex items-center justify-center mb-6">
+                            <mat-icon class="text-amber-500 text-5xl! w-14! h-14!">forum</mat-icon>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Wybierz rozmowę</h3>
+                        <p class="text-gray-600 max-w-md">
+                            Wybierz rozmowę z listy, aby rozpocząć czat w czasie rzeczywistym
+                        </p>
+                    </div>
+                    }
+
+                    <!-- Conversation Selected -->
+                    @else {
+                    <!-- Chat Header -->
+                    <div class="px-6 py-4 border-b border-gray-200 bg-linear-to-r from-amber-50 to-pink-50">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div
+                                    class="w-10 h-10 rounded-full bg-linear-to-br from-amber-400 to-pink-500 flex items-center justify-center text-white font-bold">
+                                    {{ getInitials(selectedConversation()!.displayName || selectedConversation()!.title)
+                                    }}
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-gray-900">{{ selectedConversation()!.displayName ||
+                                        selectedConversation()!.title }}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Messages Area -->
+                    <div class="chat-messages flex-1 overflow-y-auto px-6 py-4 space-y-3 bg-gray-50">
+                        <!-- Loading Messages -->
+                        @if (isLoadingMessages()) {
+                        <div class="flex items-center justify-center h-full">
+                            <mat-spinner diameter="40"></mat-spinner>
+                        </div>
+                        }
+
+                        <!-- No Messages -->
+                        @else if (messages().length === 0) {
+                        <div class="flex flex-col items-center justify-center h-full text-center">
+                            <mat-icon class="text-gray-400 text-5xl mb-3">chat</mat-icon>
+                            <p class="text-gray-600">Brak wiadomości</p>
+                            <p class="text-sm text-gray-500 mt-1">Wyślij pierwszą wiadomość!</p>
+                        </div>
+                        }
+
+                        <!-- Messages List -->
+                        @else {
+                        @for (message of messages(); track message.id) {
+                        <div [class.justify-end]="isMyMessage(message)" class="flex items-end gap-2">
+                            @if (!isMyMessage(message)) {
+                            <!-- Other user's message -->
+                            <div class="flex flex-col max-w-[70%]">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span class="text-xs font-medium text-gray-700">{{ message.sender_name }}</span>
+                                    <span class="text-xs text-gray-500">{{ formatTime(message.created_at) }}</span>
+                                </div>
+                                <div
+                                    class="bg-white border border-gray-200 rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm">
+                                    <p class="text-gray-800 wrap-break-word whitespace-pre-wrap">{{ message.content }}
+                                    </p>
+                                </div>
+                            </div>
+                            } @else {
+                            <!-- Current user's message -->
+                            <div class="flex flex-col max-w-[70%] items-end ml-auto">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span class="text-xs text-gray-500">{{ formatTime(message.created_at) }}</span>
+                                </div>
+                                <div
+                                    class="bg-linear-to-br from-amber-500 to-pink-500 rounded-2xl rounded-tr-sm px-4 py-3 shadow-sm">
+                                    <p class="text-white wrap-break-word whitespace-pre-wrap">{{ message.content }}</p>
+                                </div>
+                            </div>
+                            }
+                        </div>
+                        }
+                        }
+                    </div>
+
+                    <!-- Message Input Area -->
+                    <div class="px-6 py-4 border-t border-gray-200 bg-white">
+                        <form (submit)="sendMessage(); $event.preventDefault()" class="flex items-end gap-3">
+                            <mat-form-field appearance="outline" class="flex-1 mb-0!">
+                                <mat-label>Napisz wiadomość...</mat-label>
+                                <textarea matInput [(ngModel)]="messageInput" [ngModelOptions]="{standalone: true}"
+                                    rows="1" class="resize-none" [disabled]="isSendingMessage()">
+                                </textarea>
+                            </mat-form-field>
+                            <button mat-fab color="primary" type="submit"
+                                [disabled]="!messageInput().trim() || isSendingMessage()" matTooltip="Wyślij (Enter)">
+                                @if (isSendingMessage()) {
+                                <mat-spinner diameter="24"></mat-spinner>
+                                } @else {
+                                <mat-icon>send</mat-icon>
+                                }
+                            </button>
+                        </form>
+                    </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

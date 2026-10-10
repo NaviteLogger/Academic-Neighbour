@@ -1,0 +1,89 @@
+<div
+    class="mb-4 bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-[fadeInUp_0.4s_ease-out]">
+    <!-- Header -->
+    <div class="flex items-start gap-4 p-6 pb-4">
+        <button (click)="onNavigateToProfile()"
+            class="w-14 h-14 rounded-full bg-linear-to-br from-amber-400 to-pink-500 flex items-center justify-center text-white font-bold text-lg shadow-lg hover:scale-110 transition-transform cursor-pointer">
+            {{ authorInitial() }}
+        </button>
+        <div class="flex-1 min-w-0">
+            <button (click)="onNavigateToProfile()" class="text-left hover:underline">
+                <h3 class="text-lg font-semibold text-gray-900 truncate">
+                    {{ authorName() }}
+                </h3>
+            </button>
+            <p class="text-sm text-gray-500">
+                {{ formattedDate() }}
+            </p>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class="px-6 py-4">
+        <p class="text-gray-800 text-base leading-relaxed whitespace-pre-wrap wrap-break-word">
+            {{ post().content }}
+        </p>
+    </div>
+
+    <!-- Actions -->
+    <div class="flex items-center gap-2 px-4 py-3 border-t border-gray-100">
+        <button mat-button (click)="onLike()"
+            [matTooltip]="post().liked_by_current_user ? 'Usuń polubienie' : 'Polub ten post'"
+            [class.text-amber-600]="post().liked_by_current_user" [class.bg-amber-50]="post().liked_by_current_user"
+            class="hover:bg-amber-50 hover:text-amber-600 transition-colors">
+            <mat-icon [class.filled]="post().liked_by_current_user">
+                {{ post().liked_by_current_user ? 'thumb_up' : 'thumb_up_off_alt' }}
+            </mat-icon>
+            <span class="ml-2">
+                {{ post().liked_by_current_user ? 'Lubisz to' : 'Lubię to' }}
+                @if (post().likes_count) {
+                <span class="font-semibold">({{ post().likes_count }})</span>
+                }
+            </span>
+        </button>
+        <button mat-button (click)="onToggleComments()" matTooltip="Pokaż/ukryj komentarze"
+            [class.text-pink-600]="showComments()" [class.bg-pink-50]="showComments()"
+            class="hover:bg-pink-50 hover:text-pink-600 transition-colors">
+            <mat-icon>{{ showComments() ? 'expand_less' : 'comment' }}</mat-icon>
+            <span class="ml-2">
+                {{ showComments() ? 'Ukryj' : 'Komentarz' }}
+                @if (post().comments_count) {
+                <span class="font-semibold">({{ post().comments_count }})</span>
+                }
+            </span>
+        </button>
+    </div>
+
+    <!-- Comments Section -->
+    @if (showComments()) {
+    <div class="border-t border-gray-100 p-4 bg-gray-50">
+        <!-- Error Message -->
+        @if (commentError()) {
+        <div class="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+            <mat-icon class="text-red-500 align-middle mr-1">error</mat-icon>
+            {{ commentError() }}
+        </div>
+        }
+
+        <!-- Comment Form -->
+        <div class="mb-4">
+            <app-comment-form [postId]="post().id!" (submitComment)="onCreateComment($event)">
+            </app-comment-form>
+        </div>
+
+        <!-- Loading State -->
+        @if (isLoadingComments()) {
+        <div class="flex justify-center items-center py-8">
+            <mat-spinner diameter="40"></mat-spinner>
+        </div>
+        }
+
+        <!-- Comments List -->
+        @if (!isLoadingComments()) {
+        <app-comment-list [comments]="comments()" [postId]="post().id!" (deleteComment)="onDeleteComment($event)"
+            (updateComment)="onUpdateComment($event)">
+        </app-comment-list>
+        }
+    </div>
+    }
+</div>

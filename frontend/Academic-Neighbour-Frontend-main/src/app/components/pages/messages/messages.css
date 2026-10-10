@@ -1,0 +1,81 @@
+/* Messages page styles */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Chat messages scrollbar styling */
+.chat-messages {
+    scroll-behavior: smooth;
+}
+
+.chat-messages::-webkit-scrollbar {
+    width: 6px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 10px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover {
+    background: #a0aec0;
+}
+
+/* Message animations */
+.chat-messages>div {
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Conversation list item hover effect */
+.conversation-item:hover {
+    transform: translateX(4px);
+    transition: transform 0.2s ease;
+}
+
+/* Tab styling */
+::ng-deep .messages-tabs .mat-mdc-tab-labels {
+    justify-content: center;
+}
+
+::ng-deep .messages-tabs .mat-mdc-tab {
+    min-width: 120px;
+}
+
+::ng-deep .messages-tabs .mat-mdc-tab-label-content {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+::ng-deep .messages-tabs .mat-mdc-tab.mat-mdc-tab-active {
+    color: #f59e0b;
+}
+
+::ng-deep .messages-tabs .mat-ink-bar {
+    background-color: #f59e0b;
+}

@@ -1,0 +1,15 @@
+/* Używamy ::ng-deep, aby ostylować wewnętrzne elementy mat-list-item,
+   ponieważ Tailwind nie ma do nich dostępu.
+*/
+
+:host ::ng-deep .mat-mdc-list-item-unscoped-content {
+  /* Zapewniamy, że treść i przycisk są poprawnie rozłożone */
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+:host ::ng-deep .mat-mdc-list-item .mat-mdc-list-item-meta {
+  /* Poprawka dla przycisku akcji */
+  padding-left: 16px;
+}
