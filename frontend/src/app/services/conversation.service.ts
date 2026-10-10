@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { User } from '../models/auth.model';
+import { UserRead } from '../models/auth.model';
 import { Conversation, ConversationCreate, Message, MessageCreate } from '../models/conversation.model';
 
 @Injectable({
@@ -51,8 +51,8 @@ export class ConversationService {
     /**
      * Get all participants in a conversation
      */
-    getParticipants(conversationId: number): Observable<User[]> {
-        return this.http.get<User[]>(`${this.apiUrl}/conversations/${conversationId}/participants`).pipe(
+    getParticipants(conversationId: number): Observable<UserRead[]> {
+        return this.http.get<UserRead[]>(`${this.apiUrl}/conversations/${conversationId}/participants`).pipe(
             catchError(error => {
                 console.error('Failed to fetch participants:', error);
                 return throwError(() => error);
