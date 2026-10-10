@@ -6,7 +6,6 @@ import {
   effect,
   inject,
   signal,
-  ChangeDetectionStrategy,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -38,7 +37,6 @@ import { ProfileCommentListComponent } from './profile-comment-list/profile-comm
     ProfileCommentListComponent,
   ],
   templateUrl: './profile.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './profile.css',
 })
 export class ProfilePage implements OnInit {

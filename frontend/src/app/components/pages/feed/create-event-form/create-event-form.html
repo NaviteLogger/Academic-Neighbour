@@ -114,7 +114,7 @@
                         <mat-icon>close</mat-icon>
                         <span class="ml-1">Anuluj</span>
                     </button>
-                    <button mat-raised-button type="submit" [disabled]="!eventForm.valid"
+                    <button mat-raised-button type="submit" [disabled]="!isFormValid()"
                         class="bg-linear-to-r from-amber-500 to-pink-500 text-white">
                         <mat-icon>event_available</mat-icon>
                         <span class="ml-1">Utwórz event</span>

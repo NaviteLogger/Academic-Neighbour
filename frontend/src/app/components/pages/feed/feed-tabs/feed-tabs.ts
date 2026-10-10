@@ -1,4 +1,4 @@
-import { Component, input, output, ChangeDetectionStrategy } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -10,7 +10,6 @@ export type FeedTab = 'board' | 'events' | 'groups';
   standalone: true,
   imports: [MatButtonModule, MatIconModule],
   templateUrl: './feed-tabs.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './feed-tabs.css',
 })
 export class FeedTabsComponent {

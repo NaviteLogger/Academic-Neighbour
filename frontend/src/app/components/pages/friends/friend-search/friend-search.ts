@@ -1,4 +1,4 @@
-import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -26,7 +26,6 @@ import { UserService } from '../../../../services/user.service';
     MatTooltipModule,
   ],
   templateUrl: './friend-search.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './friend-search.css',
 })
 export class FriendSearchComponent {

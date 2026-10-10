@@ -6,7 +6,6 @@ import {
   effect,
   inject,
   signal,
-  ChangeDetectionStrategy,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatBadgeModule } from '@angular/material/badge';
@@ -44,7 +43,6 @@ import { FeedHeaderComponent } from '../feed/feed-header/feed-header';
     FeedHeaderComponent,
   ],
   templateUrl: './messages.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './messages.css',
 })
 export class MessagesPage implements OnInit, OnDestroy {

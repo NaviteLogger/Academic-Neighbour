@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -25,7 +25,6 @@ interface ErrorDetail {
   standalone: true,
   imports: [ReactiveFormsModule, AuthToggle, LoginForm, RegisterForm, Header],
   templateUrl: './login-page.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './login-page.css',
 })
 export class LoginPage {

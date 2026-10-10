@@ -4,7 +4,6 @@ import {
   inject,
   OnInit,
   signal,
-  ChangeDetectionStrategy,
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserRead } from '../../../../models/auth.model';
@@ -28,7 +27,6 @@ import { MatTooltipModule } from '@angular/material/tooltip'; // Dla podpowiedzi
     MatProgressSpinnerModule,
   ],
   templateUrl: './friend-list.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './friend-list.css',
 })
 export class FriendList implements OnInit {

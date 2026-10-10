@@ -6,7 +6,6 @@ import {
   inject,
   OnInit,
   signal,
-  ChangeDetectionStrategy,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
@@ -37,7 +36,6 @@ import { PostComponent } from '../feed/post/post';
     PostComponent,
   ],
   templateUrl: './group-detail.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './group-detail.css',
 })
 export class GroupDetailPage implements OnInit {

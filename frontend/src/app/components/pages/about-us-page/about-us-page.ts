@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 import { Footer } from '../landing-page/footer/footer';
 import { Header } from '../landing-page/header/header';
 
@@ -6,7 +6,6 @@ import { Header } from '../landing-page/header/header';
   selector: 'app-about-us-page',
   imports: [Header, Footer],
   templateUrl: './about-us-page.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './about-us-page.css',
 })
 export class AboutUsPage {}

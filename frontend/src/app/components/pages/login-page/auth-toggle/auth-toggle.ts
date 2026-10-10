@@ -1,10 +1,9 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-auth-toggle',
   imports: [],
   templateUrl: './auth-toggle.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './auth-toggle.css',
 })
 export class AuthToggle {

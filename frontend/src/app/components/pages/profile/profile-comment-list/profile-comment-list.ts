@@ -1,4 +1,4 @@
-import { Component, inject, input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
@@ -10,7 +10,6 @@ import { AuthService } from '../../../../services/auth.service';
   standalone: true,
   imports: [MatIconModule, MatButtonModule],
   templateUrl: './profile-comment-list.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './profile-comment-list.css',
 })
 export class ProfileCommentListComponent {

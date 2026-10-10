@@ -1,4 +1,4 @@
-import { Component, effect, input, output, ChangeDetectionStrategy } from '@angular/core';
+import { Component, effect, input, output } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -9,7 +9,6 @@ import { MatInputModule } from '@angular/material/input';
   standalone: true,
   imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule],
   templateUrl: './profile-comment-form.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './profile-comment-form.css',
 })
 export class ProfileCommentFormComponent {

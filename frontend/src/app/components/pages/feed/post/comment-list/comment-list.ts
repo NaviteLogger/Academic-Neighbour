@@ -5,7 +5,6 @@ import {
   input,
   output,
   signal,
-  ChangeDetectionStrategy,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -20,7 +19,6 @@ import { CommentFormComponent } from '../comment-form/comment-form';
   standalone: true,
   imports: [MatButtonModule, MatIconModule, MatTooltipModule, CommentFormComponent],
   templateUrl: './comment-list.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './comment-list.css',
 })
 export class CommentListComponent {

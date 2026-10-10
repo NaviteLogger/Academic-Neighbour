@@ -1,4 +1,4 @@
-import { Component, computed, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
@@ -11,7 +11,6 @@ import { AuthService } from '../../../../services/auth.service';
   standalone: true,
   imports: [RouterModule, MatIconModule, MatButtonModule, MatMenuModule, MatDividerModule],
   templateUrl: './feed-header.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './feed-header.css',
 })
 export class FeedHeaderComponent {

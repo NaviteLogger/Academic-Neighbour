@@ -4,7 +4,6 @@ import {
   signal,
   inject,
   computed,
-  ChangeDetectionStrategy,
 } from '@angular/core';
 
 import { FriendshipService } from '../../../../services/friendship.service';
@@ -28,7 +27,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatProgressSpinnerModule,
   ],
   templateUrl: './friend-sent-list.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './friend-sent-list.css',
 })
 export class FriendSentList implements OnInit {
