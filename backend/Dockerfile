@@ -1,13 +1,14 @@
-FROM python:3.15-slim
+FROM python:3.12-slim
 
 WORKDIR /app
 
-COPY pyproject.toml .
+RUN pip install --no-cache-dir uv
 
-RUN pip install --upgrade pip
-RUN pip install uv
-RUN uv sync
+COPY pyproject.toml uv.lock ./
+RUN uv sync --locked --no-dev
 
 COPY . /app/
+
+ENV PATH="/app/.venv/bin:$PATH"
 
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
