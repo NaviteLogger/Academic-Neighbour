@@ -3,7 +3,7 @@ from collections.abc import Generator
 from sqlalchemy import Engine
 from sqlmodel import Session, create_engine
 
-postgres_url: str = "postgresql://postgres:postgres@postgres:5432/postgres"
+postgres_url: str = "postgresql+psycopg://postgres:postgres@postgres:5432/postgres"
 engine: Engine = create_engine(postgres_url, echo=True)
 
 

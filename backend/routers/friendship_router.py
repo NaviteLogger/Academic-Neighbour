@@ -26,7 +26,7 @@ session = Depends(get_session)
 current_active_user = Depends(get_current_active_user)
 
 
-class FriendListFilter(str, enum.Enum):
+class FriendListFilter(enum.StrEnum):
     """Filter options for listing friends."""
 
     ACCEPTED = "accepted"

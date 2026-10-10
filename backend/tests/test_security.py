@@ -2,9 +2,9 @@
 
 from datetime import UTC, datetime, timedelta
 
+import jwt
 import pytest
 from fastapi import HTTPException
-from jose import jwt
 from sqlmodel import Session
 
 from models.models import User, UserRole
