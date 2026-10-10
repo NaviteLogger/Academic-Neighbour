@@ -14,7 +14,7 @@ describe('PostComponent', () => {
     component = fixture.componentInstance;
     fixture.componentRef.setInput('post', {
       id: 1,
-      text: 'Test content',
+      content: 'Test content',
       author_id: 1,
       created_at: new Date().toISOString(),
     });
