@@ -93,7 +93,6 @@ Aplikacja została zbudowana w oparciu o architekturę warstwową (layered archi
 │
 ├── main.py                    # Punkt wejścia aplikacji
 ├── pyproject.toml             # Konfiguracja projektu i zależności
-├── pytest.ini                 # Konfiguracja testów
 ├── Dockerfile                 # Definicja obrazu Docker
 ├── README.md                  # Dokumentacja podstawowa
 │
@@ -1562,15 +1561,20 @@ pytest -vv
 
 ### Konfiguracja pytest
 
-**Plik**: `pytest.ini`
+**Plik**: `pyproject.toml`
 
-```ini
-[pytest]
-testpaths = tests
-python_files = test_*.py
-python_classes = Test*
-python_functions = test_*
-addopts = -v --strict-markers --tb=short
+```toml
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+addopts = "-v --strict-markers --tb=short"
+markers = [
+    "unit: Unit tests",
+    "integration: Integration tests",
+    "slow: Slow running tests",
+]
 ```
 
 ---
