@@ -30,10 +30,3 @@ export interface PostWithAuthor {
     created_at: string;
     author_name: string;
 }
-
-/**
- * @deprecated Use PostCreate instead
- */
-export interface CreatePostDto {
-    content: string;
-}

@@ -12,7 +12,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ActivatedRoute, Router } from '@angular/router';
-import { User } from '../../../models/auth.model';
+import { UserRead } from '../../../models/auth.model';
 import { Group } from '../../../models/group.model';
 import { Post, PostCreate } from '../../../models/post.model';
 import { AuthService } from '../../../services/auth.service';
@@ -48,7 +48,7 @@ export class GroupDetailPage implements OnInit {
   // State
   readonly group = signal<Group | null>(null);
   readonly posts = signal<Post[]>([]);
-  readonly members = signal<User[]>([]);
+  readonly members = signal<UserRead[]>([]);
   readonly isLoading = signal(true);
   readonly isLoadingPosts = signal(false);
   readonly isLoadingMembers = signal(false);
@@ -269,7 +269,7 @@ export class GroupDetailPage implements OnInit {
     this.router.navigate(['/feed']);
   }
 
-  getInitials(user: User): string {
+  getInitials(user: UserRead): string {
     const firstInitial = user.first_name?.[0]?.toUpperCase() || '';
     const lastInitial = user.last_name?.[0]?.toUpperCase() || '';
     return firstInitial + lastInitial || user.username?.[0]?.toUpperCase() || 'U';
